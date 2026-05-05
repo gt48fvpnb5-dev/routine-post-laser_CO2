@@ -6,930 +6,1170 @@
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Post-Laser">
-<meta name="theme-color" content="#0A0A0A">
+<meta name="theme-color" content="#0C0B09">
 <title>Post-Laser CO₂</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
 :root{
-  --bg:#0A0A0A;--bg2:#141414;--bg3:#1C1C1C;--bg4:#242424;--bg5:#2C2C2C;
-  --border:rgba(255,255,255,0.06);--border2:rgba(255,255,255,0.11);--border3:rgba(255,255,255,0.18);
-  --text:#EDEAE5;--text2:#8E8A85;--text3:#525050;
-  --accent:#C4A47C;--accent-dim:rgba(196,164,124,0.15);
-  --green:#3D9B72;--green-bg:rgba(61,155,114,0.12);--green-border:rgba(61,155,114,0.25);
-  --amber:#B8862E;--amber-bg:rgba(184,134,46,0.12);--amber-border:rgba(184,134,46,0.25);
-  --red:#B84A3C;--red-bg:rgba(184,74,60,0.1);--red-border:rgba(184,74,60,0.22);
-  --blue:#3A7BD5;--blue-bg:rgba(58,123,213,0.1);
-  --sat:env(safe-area-inset-top);--sab:env(safe-area-inset-bottom);
-  --nav-h:58px;
-  --ease-spring:cubic-bezier(0.34,1.56,0.64,1);
-  --ease-out:cubic-bezier(0.22,1,0.36,1);
-  --ease-in-out:cubic-bezier(0.4,0,0.2,1);
+  --bg:#0C0B09;--bg2:#141210;--bg3:#1C1A17;--bg4:#242118;--bg5:#2E2B22;
+  --border:rgba(220,200,160,0.07);--border2:rgba(220,200,160,0.13);--border3:rgba(220,200,160,0.22);
+  --text:#F2EDE4;--text2:#9A9080;--text3:#5C5448;
+  --gold:#BFA07A;--gold-dim:rgba(191,160,122,0.13);--gold-border:rgba(191,160,122,0.25);
+  --gold-light:#D4B896;
+  --green:#4A9478;--green-bg:rgba(74,148,120,0.11);--green-border:rgba(74,148,120,0.24);
+  --amber:#B88030;--amber-bg:rgba(184,128,48,0.11);--amber-border:rgba(184,128,48,0.24);
+  --red:#B84844;--red-bg:rgba(184,72,68,0.1);--red-border:rgba(184,72,68,0.22);
+  --blue:#5080C0;--blue-bg:rgba(80,128,192,0.1);--blue-border:rgba(80,128,192,0.2);
+  --sat:env(safe-area-inset-top);--nav-h:56px;
+  --sp:cubic-bezier(0.34,1.56,0.64,1);
+  --out:cubic-bezier(0.22,1,0.36,1);
+  --io:cubic-bezier(0.4,0,0.2,1);
 }
 html,body{height:100%;background:var(--bg);}
-body{font-family:'Inter',sans-serif;color:var(--text);overscroll-behavior:none;}
+body{font-family:'DM Sans',sans-serif;color:var(--text);overscroll-behavior:none;}
 
-/* ── SCREENS ── */
-.screen{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);transition:opacity .4s var(--ease-out),transform .4s var(--ease-out);will-change:transform,opacity;max-width:430px;margin:0 auto;z-index:1;}
-.screen.hidden{opacity:0;pointer-events:none;transform:translateY(24px);z-index:0;visibility:hidden;}
-.screen.slide-left{opacity:0;pointer-events:none;transform:translateX(-100%);z-index:0;visibility:hidden;}
+/* ══ SCREENS ══ */
+.screen{position:fixed;inset:0;display:flex;flex-direction:column;background:var(--bg);max-width:430px;margin:0 auto;z-index:1;transition:opacity .38s var(--out),transform .38s var(--out);}
+.screen.gone{opacity:0;pointer-events:none;transform:translateY(20px);z-index:0;visibility:hidden;}
+/* Playfair Display on all display text */
+.hdr-title,.ob-h1,.hc-title,.rbtitle,.mttl,.celeb-t,.tltitle,.jstat-n,.prog-n,.pvCta-lbl{font-family:'Playfair Display',serif;}
+.hdr-title{font-style:italic;}
+.ob-h1{font-style:italic;}
+.hc-title{font-style:italic;}
 
-/* ── ONBOARDING ── */
-#screen-onboard{justify-content:flex-end;padding:0 0 calc(40px + var(--sab));overflow-y:auto;-webkit-overflow-scrolling:touch;}
-.ob-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 70% 20%, rgba(196,164,124,0.07) 0%, transparent 60%), radial-gradient(ellipse at 20% 80%, rgba(61,155,114,0.05) 0%, transparent 50%);}
-.ob-content{position:relative;padding:0 28px;}
-.ob-eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--accent);margin-bottom:12px;opacity:0;animation:fadeUp .6s .2s var(--ease-out) forwards;}
-.ob-title{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;line-height:1.05;color:var(--text);margin-bottom:8px;opacity:0;animation:fadeUp .6s .35s var(--ease-out) forwards;}
-.ob-title em{color:var(--accent);font-style:normal;}
-.ob-sub{font-size:14px;color:var(--text2);line-height:1.6;margin-bottom:32px;opacity:0;animation:fadeUp .6s .5s var(--ease-out) forwards;}
-.ob-form{opacity:0;animation:fadeUp .6s .65s var(--ease-out) forwards;}
-.ob-label{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;}
-.ob-date-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;color-scheme:dark;}
-.ob-date-input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim);}
-.ob-cta{width:100%;margin-top:16px;padding:17px;background:var(--accent);color:#0A0A0A;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:transform .18s var(--ease-spring),filter .18s;}
-.ob-cta:active{transform:scale(0.97);filter:brightness(.92);}
-.ob-hint{text-align:center;margin-top:14px;font-size:11px;color:var(--text3);}
-@keyframes fadeUp{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:translateY(0);}}
+/* ══ ONBOARDING ══ */
+#ob{overflow-y:auto;-webkit-overflow-scrolling:touch;justify-content:flex-end;}
+.ob-bg{position:absolute;inset:0;background:radial-gradient(ellipse at 65% 15%,rgba(196,164,124,0.06) 0%,transparent 55%),radial-gradient(ellipse at 25% 85%,rgba(58,155,110,0.04) 0%,transparent 50%);pointer-events:none;}
+.ob-inner{position:relative;padding:0 26px calc(44px + var(--sat));}
+.ob-step{display:none;} .ob-step.active{display:block;}
 
-/* ── MAIN APP ── */
-#screen-app{overflow:hidden;}
-.header{padding:calc(12px + var(--sat)) 20px 12px;background:rgba(10,10,10,0.92);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);position:relative;z-index:10;}
-.header-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;}
-.header-left{}
-.day-chip{display:inline-flex;align-items:center;gap:6px;background:var(--accent-dim);border:1px solid rgba(196,164,124,0.2);border-radius:20px;padding:4px 10px;margin-bottom:6px;}
-.day-chip-dot{width:6px;height:6px;border-radius:50%;background:var(--accent);}
-.day-chip-text{font-size:10px;font-weight:600;color:var(--accent);letter-spacing:.5px;}
-.header-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);line-height:1.1;}
-.header-title span{color:var(--accent);}
-.header-sub{font-size:11px;color:var(--text3);margin-top:1px;}
-.notif-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:20px;padding:7px 13px;font-size:11px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;white-space:nowrap;transition:all .2s;flex-shrink:0;}
+/* Step 1 */
+.ob-eyebrow{font-size:10px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:14px;opacity:0;animation:fu .55s .1s var(--out) forwards;}
+.ob-h1{font-family:'Syne',sans-serif;font-size:38px;font-weight:800;line-height:1.02;color:var(--text);margin-bottom:10px;opacity:0;animation:fu .55s .22s var(--out) forwards;}
+.ob-h1 em{color:var(--gold);font-style:normal;}
+.ob-p{font-size:14px;color:var(--text2);line-height:1.65;margin-bottom:28px;opacity:0;animation:fu .55s .34s var(--out) forwards;}
+.ob-form{opacity:0;animation:fu .55s .46s var(--out) forwards;}
+.ob-lbl{font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:8px;}
+.ob-input{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:14px;padding:16px 18px;font-size:16px;color:var(--text);font-family:'Inter',sans-serif;outline:none;transition:border-color .2s,box-shadow .2s;-webkit-appearance:none;color-scheme:dark;margin-bottom:10px;}
+.ob-input:focus{border-color:var(--gold);box-shadow:0 0 0 3px var(--gold-dim);}
+.ob-cta{width:100%;padding:17px;background:var(--gold);color:#080808;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:transform .18s var(--sp),filter .18s;margin-bottom:8px;}
+.ob-cta:active{transform:scale(.97);filter:brightness(.92);}
+.ob-cta:disabled{opacity:.38;pointer-events:none;}
+.ob-hint{text-align:center;font-size:11px;color:var(--text3);}
+
+/* Step 2 - profil questions */
+.ob-q{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:6px;}
+.ob-qs{font-size:13px;color:var(--text2);margin-bottom:20px;line-height:1.5;}
+.ob-choices{display:flex;flex-direction:column;gap:8px;margin-bottom:22px;}
+.ob-choice{background:var(--bg3);border:1px solid var(--border);border-radius:13px;padding:14px 16px;cursor:pointer;transition:all .2s var(--sp);display:flex;align-items:center;gap:12px;-webkit-user-select:none;}
+.ob-choice:active{transform:scale(.98);}
+.ob-choice.sel{border-color:var(--gold);background:var(--gold-dim);}
+.ob-choice-icon{font-size:20px;flex-shrink:0;}
+.ob-choice-text{font-size:13px;font-weight:500;color:var(--text);}
+.ob-choice-sub{font-size:11px;color:var(--text3);margin-top:1px;}
+.ob-next{width:100%;padding:15px;background:var(--gold);color:#080808;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .18s var(--sp);margin-bottom:8px;}
+.ob-next:active{transform:scale(.97);}
+.ob-next:disabled{opacity:.35;pointer-events:none;}
+.ob-skip{width:100%;padding:10px;background:none;border:none;font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;cursor:pointer;}
+.ob-progress{display:flex;gap:5px;margin-bottom:28px;margin-top:20px;}
+.ob-prog-dot{height:3px;flex:1;border-radius:2px;background:var(--bg4);transition:background .3s;}
+.ob-prog-dot.done{background:var(--gold);}
+
+@keyframes fu{from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);}}
+
+/* ══ APP ══ */
+#app{overflow:hidden;}
+
+/* HEADER */
+.hdr{padding:calc(10px + var(--sat)) 18px 10px;background:rgba(8,8,8,0.92);border-bottom:1px solid var(--border);flex-shrink:0;backdrop-filter:blur(24px);-webkit-backdrop-filter:blur(24px);z-index:10;position:relative;}
+.hdr-row{display:flex;align-items:center;justify-content:space-between;}
+.hdr-left{flex:1;}
+.day-pill{display:inline-flex;align-items:center;gap:5px;background:var(--gold-dim);border:1px solid var(--gold-border);border-radius:20px;padding:3px 9px;margin-bottom:5px;}
+.day-pill-dot{width:5px;height:5px;border-radius:50%;background:var(--gold);}
+.day-pill-txt{font-size:10px;font-weight:700;color:var(--gold);letter-spacing:.5px;}
+.hdr-title{font-family:'Syne',sans-serif;font-size:21px;font-weight:700;color:var(--text);line-height:1.1;}
+.hdr-title span{color:var(--gold);}
+.hdr-sub{font-size:10px;color:var(--text3);margin-top:1px;}
+.hdr-right{display:flex;gap:8px;align-items:center;}
+.streak-chip{display:flex;align-items:center;gap:4px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:20px;padding:5px 10px;cursor:pointer;}
+.streak-fire{font-size:13px;}
+.streak-n{font-size:12px;font-weight:700;color:var(--amber);}
+.notif-btn{background:var(--bg3);border:1px solid var(--border2);color:var(--text2);border-radius:20px;padding:5px 11px;font-size:10px;font-weight:500;font-family:'Inter',sans-serif;cursor:pointer;transition:all .2s;}
 .notif-btn.on{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
-.notif-btn:active{transform:scale(0.95);}
+.notif-btn:active{transform:scale(.95);}
 
-/* Phase bar */
-.phase-bar{margin-top:12px;}
-.phase-bar-track{height:3px;background:var(--bg4);border-radius:2px;position:relative;overflow:hidden;}
-.phase-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent) 0%,var(--green) 100%);border-radius:2px;transition:width .7s var(--ease-out);}
-.phase-labels{display:flex;justify-content:space-between;margin-top:5px;}
-.phase-label{font-size:9px;color:var(--text3);font-weight:500;}
-.phase-label.active{color:var(--accent);}
+/* Phase progress bar */
+.phase-progress{margin-top:10px;}
+.pp-track{height:2px;background:var(--bg4);border-radius:1px;position:relative;}
+.pp-fill{height:100%;background:linear-gradient(90deg,var(--gold),var(--green));border-radius:1px;transition:width .8s var(--out);}
+.pp-labels{display:flex;justify-content:space-between;margin-top:4px;}
+.pp-lbl{font-size:8px;color:var(--text3);font-weight:500;transition:color .3s;}
+.pp-lbl.cur{color:var(--gold);font-weight:700;}
 
-/* Content */
-.content-wrap{flex:1;position:relative;overflow:hidden;min-height:0;}
-.view{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + var(--sab) + 20px);opacity:0;pointer-events:none;transform:translateX(32px);transition:opacity .3s var(--ease-in-out),transform .3s var(--ease-in-out);will-change:transform,opacity;}
+/* ══ CONTENT ══ */
+.cwrap{flex:1;position:relative;overflow:hidden;min-height:0;}
+.view{position:absolute;inset:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding-bottom:calc(var(--nav-h) + 18px);opacity:0;pointer-events:none;transform:translateX(28px);transition:opacity .28s var(--io),transform .28s var(--io);will-change:transform,opacity;}
 .view.active{opacity:1;pointer-events:all;transform:translateX(0);}
-.view.exit-left{opacity:0;transform:translateX(-32px);pointer-events:none;}
+.view.xl{opacity:0;transform:translateX(-28px);pointer-events:none;}
+.sec{padding:18px 16px 0;}
+.sec-ttl{font-size:9px;font-weight:500;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
 
-.section{padding:20px 16px 0;}
-.section-title{font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;}
+/* ══ TIME CONTEXT HERO ══ */
+.time-hero{padding:20px 18px 10px;border-bottom:1px solid var(--border);flex-shrink:0;}
+.th-greeting{font-size:11px;font-weight:500;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:4px;}
+.th-title{font-family:'Playfair Display',serif;font-style:italic;font-size:28px;font-weight:400;color:var(--text);line-height:1.15;margin-bottom:2px;}
+.th-title strong{font-weight:700;color:var(--gold-light);font-style:normal;}
+.th-sub{font-size:11px;color:var(--text3);margin-bottom:12px;}
+.th-tabs{display:flex;gap:6px;}
+.th-tab{flex:1;padding:8px;background:var(--bg3);border:1px solid var(--border);border-radius:10px;font-size:11px;font-weight:500;color:var(--text3);cursor:pointer;text-align:center;transition:all .2s var(--sp);}
+.th-tab:active{transform:scale(.97);}
+.th-tab.active{background:var(--gold-dim);border-color:var(--gold-border);color:var(--gold-light);}
 
-/* ── TODAY VIEW ── */
-.phase-card-header{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:16px 18px;margin-bottom:12px;}
-.pch-phase{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--accent);margin-bottom:4px;}
-.pch-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:10px;}
-.pch-tags{display:flex;gap:6px;flex-wrap:wrap;}
-.pch-tag{font-size:10px;font-weight:500;padding:3px 9px;border-radius:6px;}
-.tag-repair{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
-.tag-intro{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
-.tag-active{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
-.tag-info{background:var(--blue-bg);color:var(--blue);border:1px solid rgba(58,123,213,0.2);}
+/* ══ TODAY VIEW ══ */
+/* Hero card */
+.hero-card{background:var(--bg2);border:1px solid var(--border);border-radius:18px;padding:16px 18px;margin-bottom:11px;position:relative;overflow:hidden;}
+.hero-card::before{content:'';position:absolute;top:-40px;right:-40px;width:120px;height:120px;border-radius:50%;background:var(--gold-dim);pointer-events:none;}
+.hc-phase{font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+.hc-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:10px;}
+.hc-tags{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;}
+.tag{font-size:10px;font-weight:600;padding:3px 9px;border-radius:6px;}
+.tg{background:var(--green-bg);color:var(--green);border:1px solid var(--green-border);}
+.ta{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.tr{background:var(--red-bg);color:var(--red);border:1px solid var(--red-border);}
+.tb{background:var(--blue-bg);color:var(--blue);border:1px solid var(--blue-border);}
 
-/* Progress ring */
-.progress-summary{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin-bottom:12px;}
-.ring-wrap{flex-shrink:0;}
-.ring-svg{transform:rotate(-90deg);}
-.ring-bg{fill:none;stroke:var(--bg4);stroke-width:3;}
-.ring-fill{fill:none;stroke:var(--green);stroke-width:3;stroke-linecap:round;transition:stroke-dashoffset .5s var(--ease-out);}
-.progress-text{flex:1;}
-.progress-count{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);}
-.progress-count span{font-size:13px;font-weight:400;color:var(--text3);}
-.progress-label{font-size:11px;color:var(--text2);margin-top:1px;}
-.reset-btn{font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;padding:4px 8px;font-family:'Inter',sans-serif;}
-.reset-btn:active{color:var(--text2);}
+/* Phase validation CTA */
+.phase-validate{display:none;margin-top:8px;width:100%;padding:12px;background:var(--green);color:#080808;border:none;border-radius:11px;font-family:'Syne',sans-serif;font-size:12px;font-weight:700;cursor:pointer;transition:all .2s var(--sp);}
+.phase-validate.show{display:block;}
+.phase-validate:active{transform:scale(.97);}
 
-/* SPF */
-.spf-banner{display:flex;align-items:center;gap:12px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:13px;padding:12px 15px;margin-bottom:10px;}
-.spf-ico{font-size:22px;flex-shrink:0;}
+/* Daily progress ring */
+.prog-row{display:flex;align-items:center;gap:14px;background:var(--bg2);border:1px solid var(--border);border-radius:14px;padding:13px 16px;margin-bottom:11px;}
+.ring-svg{transform:rotate(-90deg);flex-shrink:0;}
+.ring-bg{fill:none;stroke:var(--bg4);stroke-width:3.5;}
+.ring-fg{fill:none;stroke:var(--green);stroke-width:3.5;stroke-linecap:round;transition:stroke-dashoffset .5s var(--out),stroke .4s;}
+.prog-info{flex:1;}
+.prog-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);line-height:1;}
+.prog-n sup{font-size:13px;font-weight:400;color:var(--text3);}
+.prog-lbl{font-size:11px;color:var(--text2);margin-top:2px;}
+.prog-done-msg{font-size:11px;color:var(--green);margin-top:2px;display:none;}
+.reset-lnk{font-size:10px;color:var(--text3);background:none;border:none;cursor:pointer;font-family:'Inter',sans-serif;padding:4px 6px;}
+
+/* SPF banner */
+.spf-bar{display:flex;align-items:center;gap:11px;background:var(--amber-bg);border:1px solid var(--amber-border);border-radius:12px;padding:11px 14px;margin-bottom:11px;}
+.spf-ico{font-size:20px;}
 .spf-t{font-size:12px;font-weight:600;color:var(--amber);}
-.spf-s{font-size:10px;color:rgba(184,134,46,0.7);margin-top:2px;line-height:1.4;}
+.spf-s{font-size:10px;color:rgba(184,134,46,.65);margin-top:1px;line-height:1.4;}
 
-/* Routine block */
-.block{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;}
-.block-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px 11px;border-bottom:1px solid var(--border);}
-.block-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
-.block-sub{font-size:10px;color:var(--text3);}
-.step-row{display:flex;align-items:center;gap:12px;padding:11px 16px;border-bottom:1px solid var(--border);cursor:pointer;min-height:50px;transition:background .15s;-webkit-user-select:none;}
-.step-row:last-child{border-bottom:none;}
-.step-row:active{background:var(--bg3);}
-.chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .22s var(--ease-spring),border-color .22s,transform .22s var(--ease-spring);}
-.step-row.done .chk{background:var(--green);border-color:var(--green);transform:scale(1.08);}
-.step-row.done .chk::after{content:'';width:5px;height:9px;border:1.5px solid #0A0A0A;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
-.step-body{flex:1;min-width:0;}
-.step-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;transition:opacity .2s;}
-.step-note{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.4;transition:opacity .2s;}
-.step-row.done .step-name{opacity:.3;text-decoration:line-through;}
-.step-row.done .step-note{opacity:.25;}
-.step-pill{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 7px;border-radius:5px;flex-shrink:0;}
-.pill-intro{background:var(--amber-bg);color:var(--amber);}
-.pill-active{background:var(--green-bg);color:var(--green);}
+/* Routine blocks */
+.rblock{background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:10px;}
+.rbhead{display:flex;align-items:center;justify-content:space-between;padding:12px 16px 10px;border-bottom:1px solid var(--border);}
+.rbtitle{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);}
+.rbsub{font-size:10px;color:var(--text3);}
+.srow{display:flex;align-items:center;gap:11px;padding:10px 16px;border-bottom:1px solid var(--border);cursor:pointer;min-height:50px;transition:background .14s;-webkit-user-select:none;}
+.srow:last-child{border-bottom:none;}
+.srow:active{background:var(--bg3);}
+.chk{width:22px;height:22px;border-radius:50%;border:1.5px solid var(--border3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:background .2s var(--sp),border-color .2s,transform .2s var(--sp);}
+.srow.done .chk{background:var(--green);border-color:var(--green);transform:scale(1.1);}
+.srow.done .chk::after{content:'';width:5px;height:9px;border:1.5px solid #080808;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
+.sbody{flex:1;min-width:0;}
+.sname{font-size:13px;font-weight:500;color:var(--text);line-height:1.3;transition:opacity .18s,text-decoration .18s;}
+.snote{font-size:10px;color:var(--text3);margin-top:2px;line-height:1.4;transition:opacity .18s;}
+.srow.done .sname{opacity:.3;text-decoration:line-through;}
+.srow.done .snote{opacity:.25;}
+.spill{font-size:9px;font-weight:700;letter-spacing:.4px;padding:3px 7px;border-radius:5px;flex-shrink:0;}
+.pi{background:var(--amber-bg);color:var(--amber);}
+.pa{background:var(--green-bg);color:var(--green);}
 
-/* ── PRODUCTS VIEW ── */
-.products-grid{display:flex;flex-direction:column;gap:8px;}
-.product-card{background:var(--bg2);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:14px;padding:12px 14px;animation:slideUp .35s var(--ease-out) both;}
-.product-card:nth-child(2){animation-delay:.04s}.product-card:nth-child(3){animation-delay:.08s}.product-card:nth-child(4){animation-delay:.12s}.product-card:nth-child(5){animation-delay:.16s}.product-card:nth-child(6){animation-delay:.2s}.product-card:nth-child(7){animation-delay:.24s}
-@keyframes slideUp{from{opacity:0;transform:translateY(12px);}to{opacity:1;transform:translateY(0);}}
-.prod-img-wrap{width:54px;height:54px;border-radius:10px;flex-shrink:0;overflow:hidden;background:var(--bg4);display:flex;align-items:center;justify-content:center;}
-.prod-img-wrap img{width:100%;height:100%;object-fit:cover;}
-.prod-abbr{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;}
-.prod-info{flex:1;min-width:0;}
-.prod-brand{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;}
-.prod-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.35;}
-.prod-role{font-size:10px;color:var(--text3);margin-top:2px;}
-.prod-when{display:inline-block;margin-top:5px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;}
-.pw-now{background:var(--green-bg);color:var(--green);}
-.pw-w3{background:var(--amber-bg);color:var(--amber);}
-.pw-w6{background:var(--red-bg);color:var(--red);}
+/* ══ PRODUITS ══ */
+.plist{display:flex;flex-direction:column;gap:8px;}
+.pcard{background:var(--bg2);border:1px solid var(--border);border-radius:14px;display:flex;align-items:center;gap:13px;padding:11px 13px;animation:su .32s var(--out) both;}
+.pcard:nth-child(2){animation-delay:.04s}.pcard:nth-child(3){animation-delay:.08s}.pcard:nth-child(4){animation-delay:.12s}.pcard:nth-child(5){animation-delay:.16s}.pcard:nth-child(6){animation-delay:.2s}.pcard:nth-child(7){animation-delay:.24s}
+@keyframes su{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.pimg{width:54px;height:54px;border-radius:10px;flex-shrink:0;overflow:hidden;}
+.pimg img{width:100%;height:100%;object-fit:cover;}
+.pinfo{flex:1;min-width:0;}
+.pbrand{font-size:9px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);margin-bottom:2px;}
+.pname{font-size:12px;font-weight:500;color:var(--text);line-height:1.35;}
+.prole{font-size:10px;color:var(--text3);margin-top:2px;}
+.pwhen{display:inline-block;margin-top:5px;font-size:9px;font-weight:700;padding:2px 7px;border-radius:4px;}
+.pw0{background:var(--green-bg);color:var(--green);}
+.pw1{background:var(--amber-bg);color:var(--amber);}
+.pw2{background:var(--red-bg);color:var(--red);}
 
-/* ── PLAN VIEW ── */
-.plan-overview{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:16px;margin-bottom:14px;}
-.plan-ov-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);margin-bottom:12px;}
-.plan-weeks{display:flex;gap:4px;}
-.plan-week{flex:1;display:flex;flex-direction:column;gap:3px;}
-.plan-week-label{font-size:8px;color:var(--text3);text-align:center;font-weight:500;}
-.plan-week-bar{height:28px;border-radius:5px;transition:all .3s;}
-.plan-week-bar.repair{background:var(--green-bg);border:1px solid var(--green-border);}
-.plan-week-bar.intro{background:var(--amber-bg);border:1px solid var(--amber-border);}
-.plan-week-bar.active-now{outline:2px solid var(--accent);outline-offset:1px;}
+/* ══ PLAN VIEW ══ */
+.week-grid{display:flex;gap:5px;margin-bottom:16px;}
+.wk{flex:1;display:flex;flex-direction:column;gap:4px;align-items:center;}
+.wk-bar{width:100%;height:32px;border-radius:6px;transition:all .3s;}
+.wk-bar.repair{background:var(--green-bg);border:1px solid var(--green-border);}
+.wk-bar.intro{background:var(--amber-bg);border:1px solid var(--amber-border);}
+.wk-bar.done-bar{opacity:.35;}
+.wk-bar.now-bar{outline:2px solid var(--gold);outline-offset:2px;}
+.wk-lbl{font-size:9px;color:var(--text3);font-weight:500;}
+.wk-lbl.cur{color:var(--gold);font-weight:700;}
 
-.tl-item{display:flex;gap:14px;padding-bottom:24px;}
-.tl-item:last-child{padding-bottom:0;}
-.tl-l{display:flex;flex-direction:column;align-items:center;padding-top:3px;}
-.tl-dot{width:12px;height:12px;border-radius:50%;border:2px solid var(--text3);background:var(--bg);flex-shrink:0;transition:all .3s;}
-.tl-dot.done{background:var(--accent);border-color:var(--accent);}
-.tl-dot.current{background:var(--green);border-color:var(--green);box-shadow:0 0 0 3px var(--green-bg);}
-.tl-line{flex:1;width:1px;background:var(--border2);margin-top:4px;}
-.tl-phase{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--accent);margin-bottom:2px;}
-.tl-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:7px;}
-.tl-items{display:flex;flex-direction:column;gap:4px;}
-.tl-row{display:flex;align-items:flex-start;gap:7px;font-size:11px;color:var(--text2);line-height:1.45;}
-.tl-row::before{content:'–';color:var(--text3);flex-shrink:0;}
+.tli{display:flex;gap:13px;padding-bottom:22px;}
+.tli:last-child{padding-bottom:4px;}
+.tleft{display:flex;flex-direction:column;align-items:center;padding-top:2px;}
+.tldot{width:12px;height:12px;border-radius:50%;border:2px solid var(--text3);background:var(--bg);flex-shrink:0;transition:all .3s;}
+.tldot.done{background:var(--gold);border-color:var(--gold);}
+.tldot.now{background:var(--green);border-color:var(--green);box-shadow:0 0 0 3px var(--green-bg);}
+.tlline{flex:1;width:1px;background:var(--border2);margin-top:4px;}
+.tlphase{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:2px;}
+.tltitle{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--text);margin-bottom:7px;}
+.tlrows{display:flex;flex-direction:column;gap:4px;}
+.tlrow{display:flex;gap:7px;font-size:11px;color:var(--text2);line-height:1.45;}
+.tlrow::before{content:'–';color:var(--text3);flex-shrink:0;}
 
-/* ── JOURNAL VIEW ── */
-.journal-add{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 16px;margin-bottom:12px;}
-.j-add-title{font-size:12px;font-weight:500;color:var(--text);margin-bottom:8px;}
-.j-moods{display:flex;gap:6px;margin-bottom:10px;flex-wrap:wrap;}
-.j-mood{background:var(--bg3);border:1px solid var(--border);border-radius:20px;padding:6px 12px;font-size:11px;color:var(--text2);cursor:pointer;transition:all .2s var(--ease-spring);}
-.j-mood:active{transform:scale(0.95);}
-.j-mood.selected{border-color:var(--accent);color:var(--accent);background:var(--accent-dim);}
-.j-mood.sel-good{border-color:var(--green);color:var(--green);background:var(--green-bg);}
-.j-mood.sel-warn{border-color:var(--amber);color:var(--amber);background:var(--amber-bg);}
-.j-mood.sel-bad{border-color:var(--red);color:var(--red);background:var(--red-bg);}
-.j-note{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:none;line-height:1.5;transition:border-color .2s;color-scheme:dark;}
+/* ══ JOURNAL ══ */
+.j-add{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:14px 15px;margin-bottom:12px;}
+.j-add-t{font-size:12px;font-weight:500;color:var(--text);margin-bottom:10px;}
+.j-qs{display:flex;flex-direction:column;gap:8px;margin-bottom:12px;}
+.j-q{background:var(--bg3);border-radius:12px;padding:11px 13px;}
+.j-q-t{font-size:11px;font-weight:600;color:var(--text2);margin-bottom:7px;}
+.j-opts{display:flex;gap:6px;flex-wrap:wrap;}
+.jopt{font-size:11px;font-weight:500;padding:5px 11px;border-radius:20px;background:var(--bg4);border:1px solid var(--border);color:var(--text3);cursor:pointer;transition:all .18s var(--sp);-webkit-user-select:none;}
+.jopt:active{transform:scale(.95);}
+.jopt.sel-ok{background:var(--green-bg);border-color:var(--green-border);color:var(--green);}
+.jopt.sel-warn{background:var(--amber-bg);border-color:var(--amber-border);color:var(--amber);}
+.jopt.sel-bad{background:var(--red-bg);border-color:var(--red-border);color:var(--red);}
+.jopt.sel-neu{background:var(--bg4);border-color:var(--border2);color:var(--text2);}
+.j-note{width:100%;background:var(--bg3);border:1px solid var(--border2);border-radius:10px;padding:10px 12px;font-size:13px;color:var(--text);font-family:'Inter',sans-serif;outline:none;resize:none;line-height:1.5;transition:border-color .2s;color-scheme:dark;margin-bottom:8px;}
 .j-note:focus{border-color:var(--border3);}
-.j-submit{width:100%;margin-top:8px;padding:12px;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:600;color:var(--text);cursor:pointer;transition:all .2s;}
-.j-submit:active{transform:scale(0.98);}
-.j-submit.ready{background:var(--accent);border-color:var(--accent);color:#0A0A0A;}
+.j-save{width:100%;padding:12px;background:var(--bg4);border:1px solid var(--border2);border-radius:10px;font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--text2);cursor:pointer;transition:all .2s;}
+.j-save.rdy{background:var(--gold);border-color:var(--gold);color:#080808;}
+.j-save:active{transform:scale(.98);}
 
-.j-entries{display:flex;flex-direction:column;gap:8px;}
-.j-entry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;}
-.j-entry-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
-.j-entry-day{font-size:11px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
-.j-entry-mood{font-size:14px;}
-.j-entry-date{font-size:10px;color:var(--text3);}
-.j-entry-text{font-size:12px;color:var(--text2);line-height:1.5;}
-.j-empty{text-align:center;padding:32px 20px;color:var(--text3);font-size:13px;line-height:1.6;}
+/* Journal analytics */
+.j-stats{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px;}
+.jstat{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 14px;}
+.jstat-n{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;color:var(--text);}
+.jstat-l{font-size:10px;color:var(--text3);margin-top:2px;}
+.j-chart{background:var(--bg2);border:1px solid var(--border);border-radius:13px;padding:12px 14px;margin-bottom:12px;}
+.j-chart-t{font-size:10px;font-weight:600;color:var(--text3);letter-spacing:1px;text-transform:uppercase;margin-bottom:10px;}
+.j-bars{display:flex;gap:4px;align-items:flex-end;height:48px;}
+.jbar-wrap{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;height:100%;}
+.jbar{width:100%;border-radius:3px;transition:height .4s var(--out);}
+.jbar.ok{background:var(--green);}
+.jbar.warn{background:var(--amber);}
+.jbar.bad{background:var(--red);}
+.jbar.empty{background:var(--bg4);height:4px!important;}
+.jbar-d{font-size:8px;color:var(--text3);}
 
-/* ── RULES VIEW ── */
-.alert-box{background:var(--red-bg);border:1px solid var(--red-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
-.alert-title{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;}
-.alert-body{font-size:12px;color:rgba(240,200,195,0.7);line-height:1.6;}
-.rule-list{display:flex;flex-direction:column;gap:6px;}
-.rule-item{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:12px 14px;display:flex;gap:10px;align-items:flex-start;}
-.rule-ico{font-size:14px;flex-shrink:0;margin-top:0;}
-.rule-txt{font-size:11px;color:var(--text2);line-height:1.55;}
+.j-entries{display:flex;flex-direction:column;gap:7px;}
+.jentry{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;}
+.jentry-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:5px;}
+.jentry-day{font-size:12px;font-weight:600;color:var(--text);display:flex;align-items:center;gap:6px;}
+.jentry-ico{font-size:15px;}
+.jentry-date{font-size:10px;color:var(--text3);}
+.jentry-details{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:4px;}
+.jentry-tag{font-size:9px;padding:2px 7px;border-radius:4px;font-weight:600;}
+.jentry-note{font-size:11px;color:var(--text2);line-height:1.5;}
+.j-empty{text-align:center;padding:28px 16px;color:var(--text3);font-size:12px;line-height:1.7;}
 
-/* ── NAV ── */
-.nav{display:flex;background:rgba(10,10,10,0.94);border-top:1px solid var(--border);padding-bottom:var(--sab);flex-shrink:0;height:calc(var(--nav-h) + var(--sab));min-height:calc(var(--nav-h) + var(--sab));z-index:20;backdrop-filter:blur(24px) saturate(180%);-webkit-backdrop-filter:blur(24px) saturate(180%);}
-.nav-item{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:6px 4px;cursor:pointer;gap:4px;min-height:44px;position:relative;}
-.nav-item:active{opacity:.5;}
-.nav-ic{font-size:20px;transition:transform .3s var(--ease-spring);}
-.nav-item.active .nav-ic{transform:scale(1.18) translateY(-2px);}
-.nav-lbl{font-size:9px;font-weight:500;color:var(--text3);transition:color .2s;letter-spacing:.3px;}
-.nav-item.active .nav-lbl{color:var(--accent);}
-.nav-indicator{position:absolute;bottom:calc(var(--sab) + 4px);width:16px;height:3px;border-radius:2px;background:var(--accent);opacity:0;transform:scaleX(0);transition:opacity .25s,transform .35s var(--ease-spring);}
-.nav-item.active .nav-indicator{opacity:1;transform:scaleX(1);}
+/* ══ RÈGLES ══ */
+.alert-card{background:var(--red-bg);border:1px solid var(--red-border);border-radius:14px;padding:14px 16px;margin-bottom:10px;}
+.alert-t{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--red);margin-bottom:6px;}
+.alert-b{font-size:12px;color:rgba(235,195,190,.7);line-height:1.6;}
+.rules{display:flex;flex-direction:column;gap:6px;}
+.rule{background:var(--bg2);border:1px solid var(--border);border-radius:12px;padding:11px 13px;display:flex;gap:10px;align-items:flex-start;}
+.rule-i{font-size:14px;flex-shrink:0;}
+.rule-t{font-size:11px;color:var(--text2);line-height:1.55;}
 
-/* ── MODAL ── */
-.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .28s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
-.modal-overlay.show{opacity:1;pointer-events:all;}
-.modal{background:var(--bg2);border:1px solid var(--border2);border-top:1px solid var(--border3);border-radius:28px 28px 0 0;padding:20px 20px calc(20px + var(--sab));width:100%;max-width:430px;transform:translateY(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);will-change:transform;}
-.modal-overlay.show .modal{transform:translateY(0);transition:transform .38s var(--ease-out);}
-.modal-handle{width:36px;height:4px;border-radius:2px;background:var(--bg5);margin:0 auto 20px;}
-.modal-title{font-family:'Syne',sans-serif;font-size:20px;font-weight:700;color:var(--text);margin-bottom:3px;}
-.modal-sub{font-size:12px;color:var(--text3);margin-bottom:16px;}
-.notif-list{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
-.notif-row{display:flex;align-items:center;gap:12px;background:var(--bg3);border-radius:13px;padding:13px 14px;min-height:60px;}
-.notif-emoji{font-size:18px;flex-shrink:0;}
-.notif-info{flex:1;}
-.notif-name{font-size:13px;font-weight:500;color:var(--text);}
-.notif-time{font-size:11px;color:var(--text3);margin-top:2px;}
-.toggle{width:44px;height:27px;border-radius:14px;background:var(--bg5);border:none;position:relative;cursor:pointer;flex-shrink:0;transition:background .25s var(--ease-in-out);}
-.toggle.on{background:var(--green);}
-.toggle::after{content:'';position:absolute;top:3px;left:3px;width:21px;height:21px;border-radius:50%;background:#FFF;box-shadow:0 1px 4px rgba(0,0,0,.5);transition:transform .28s var(--ease-spring);}
-.toggle.on::after{transform:translateX(17px);}
-.modal-cta{width:100%;padding:15px;background:var(--accent);color:#0A0A0A;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;transition:transform .18s var(--ease-spring),filter .18s;}
-.modal-cta:active{transform:scale(0.97);filter:brightness(.9);}
-.modal-dismiss{width:100%;padding:12px;margin-top:4px;background:none;border:none;font-size:12px;color:var(--text3);font-family:'Inter',sans-serif;cursor:pointer;}
+/* ══ NAV ══ */
+.nav{display:flex;background:rgba(8,8,8,0.94);border-top:1px solid var(--border);flex-shrink:0;height:var(--nav-h);min-height:var(--nav-h);z-index:20;backdrop-filter:blur(24px) saturate(160%);-webkit-backdrop-filter:blur(24px) saturate(160%);}
+.ni{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;cursor:pointer;min-height:44px;position:relative;-webkit-user-select:none;}
+.ni:active{opacity:.5;}
+.ni-ic{font-size:19px;transition:transform .28s var(--sp);}
+.ni.active .ni-ic{transform:scale(1.2) translateY(-2px);}
+.ni-lbl{font-size:9px;font-weight:500;color:var(--text3);transition:color .2s;}
+.ni.active .ni-lbl{color:var(--gold);}
+.ni-bar{position:absolute;bottom:5px;width:18px;height:3px;border-radius:2px;background:var(--gold);opacity:0;transform:scaleX(0);transition:opacity .22s,transform .32s var(--sp);}
+.ni.active .ni-bar{opacity:1;transform:scaleX(1);}
 
-/* Reset modal */
-.reset-modal{background:var(--bg2);border:1px solid var(--border2);border-radius:28px 28px 0 0;padding:24px 20px calc(24px + var(--sab));width:100%;max-width:430px;transform:translateY(100%);transition:transform .38s cubic-bezier(.4,0,.2,1);}
-.modal-overlay.show .reset-modal{transform:translateY(0);transition:transform .38s var(--ease-out);}
-.rm-title{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--text);margin-bottom:6px;}
-.rm-sub{font-size:13px;color:var(--text2);line-height:1.5;margin-bottom:20px;}
-.rm-btns{display:flex;flex-direction:column;gap:8px;}
-.rm-btn-danger{padding:14px;background:var(--red-bg);border:1px solid var(--red-border);border-radius:12px;color:var(--red);font-family:'Syne',sans-serif;font-size:13px;font-weight:700;cursor:pointer;}
-.rm-btn-cancel{padding:12px;background:none;border:none;color:var(--text3);font-family:'Inter',sans-serif;font-size:12px;cursor:pointer;}
+/* ══ MODALS ══ */
+.moverlay{position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:200;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .26s;backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);}
+.moverlay.on{opacity:1;pointer-events:all;}
+.msheet{background:var(--bg2);border:1px solid var(--border2);border-top:1px solid var(--border3);border-radius:26px 26px 0 0;padding:18px 20px 28px;width:100%;max-width:430px;transform:translateY(100%);transition:transform .36s var(--io);will-change:transform;}
+.moverlay.on .msheet{transform:translateY(0);transition:transform .36s var(--out);}
+.mhandle{width:34px;height:4px;border-radius:2px;background:var(--bg5);margin:0 auto 18px;}
+.mttl{font-family:'Syne',sans-serif;font-size:19px;font-weight:700;color:var(--text);margin-bottom:3px;}
+.msub{font-size:12px;color:var(--text3);margin-bottom:15px;}
+.mcta{width:100%;padding:14px;background:var(--gold);color:#080808;border:none;border-radius:13px;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;cursor:pointer;transition:transform .16s var(--sp);}
+.mcta:active{transform:scale(.97);}
+.mdismiss{width:100%;padding:11px;margin-top:4px;background:none;border:none;font-size:11px;color:var(--text3);font-family:'Inter',sans-serif;cursor:pointer;}
+
+/* Notifs */
+.nlist{display:flex;flex-direction:column;gap:5px;margin-bottom:14px;}
+.nrow{display:flex;align-items:center;gap:11px;background:var(--bg3);border-radius:12px;padding:12px 13px;min-height:56px;}
+.nemo{font-size:17px;flex-shrink:0;}
+.ninfo{flex:1;}
+.nname{font-size:13px;font-weight:500;color:var(--text);}
+.ntime{font-size:11px;color:var(--text3);margin-top:1px;}
+.tog{width:42px;height:26px;border-radius:13px;background:var(--bg5);border:none;position:relative;cursor:pointer;flex-shrink:0;transition:background .22s var(--io);}
+.tog.on{background:var(--green);}
+.tog::after{content:'';position:absolute;top:3px;left:3px;width:20px;height:20px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.45);transition:transform .26s var(--sp);}
+.tog.on::after{transform:translateX(16px);}
+
+/* Streak modal */
+.streak-days{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.sd{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:10px;font-weight:700;}
+.sd.hit{background:var(--amber-bg);color:var(--amber);border:1px solid var(--amber-border);}
+.sd.miss{background:var(--bg3);color:var(--text3);}
+.sd.today{background:var(--amber);color:#080808;}
+
+/* Phase validate modal */
+.pv-checks{display:flex;flex-direction:column;gap:6px;margin-bottom:16px;}
+.pvc{display:flex;align-items:center;gap:10px;background:var(--bg3);border-radius:11px;padding:12px 13px;cursor:pointer;-webkit-user-select:none;transition:all .2s;}
+.pvc:active{transform:scale(.98);}
+.pvc-chk{width:20px;height:20px;border-radius:50%;border:1.5px solid var(--border3);flex-shrink:0;display:flex;align-items:center;justify-content:center;transition:all .2s var(--sp);}
+.pvc.checked .pvc-chk{background:var(--green);border-color:var(--green);}
+.pvc.checked .pvc-chk::after{content:'';width:4px;height:8px;border:1.5px solid #080808;border-top:none;border-left:none;transform:rotate(45deg) translateY(-1px);}
+.pvc-t{font-size:12px;color:var(--text);font-weight:500;}
 
 /* TOAST */
-.toast{position:fixed;bottom:calc(var(--nav-h) + var(--sab) + 14px);left:50%;transform:translateX(-50%) translateY(10px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 18px;border-radius:24px;font-size:12px;font-weight:500;opacity:0;pointer-events:none;white-space:nowrap;z-index:300;max-width:calc(100% - 32px);transition:opacity .25s,transform .3s var(--ease-spring);}
-.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+.toast{position:fixed;bottom:calc(var(--nav-h) + 12px);left:50%;transform:translateX(-50%) translateY(8px);background:var(--bg3);border:1px solid var(--border2);color:var(--text);padding:10px 17px;border-radius:22px;font-size:12px;font-weight:500;opacity:0;pointer-events:none;white-space:nowrap;z-index:300;max-width:calc(100% - 28px);transition:opacity .22s,transform .28s var(--sp);}
+.toast.on{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* Celebration overlay */
+.celeb{position:fixed;inset:0;z-index:400;display:flex;flex-direction:column;align-items:center;justify-content:center;background:rgba(8,8,8,.92);opacity:0;pointer-events:none;transition:opacity .3s;}
+.celeb.on{opacity:1;pointer-events:all;}
+.celeb-emoji{font-size:72px;margin-bottom:16px;animation:bounce 0.6s var(--sp) infinite alternate;}
+.celeb-t{font-family:'Syne',sans-serif;font-size:26px;font-weight:800;color:var(--text);text-align:center;margin-bottom:8px;}
+.celeb-s{font-size:14px;color:var(--text2);text-align:center;max-width:280px;line-height:1.6;margin-bottom:28px;}
+.celeb-btn{padding:14px 32px;background:var(--gold);color:#080808;border:none;border-radius:14px;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;}
+@keyframes bounce{from{transform:translateY(0);}to{transform:translateY(-8px);}}
 </style>
 </head>
 <body>
 
-<!-- ONBOARDING -->
-<div id="screen-onboard" class="screen">
+<!-- ══ ONBOARDING ══ -->
+<div id="ob" class="screen">
   <div class="ob-bg"></div>
-  <div class="ob-content">
-    <div class="ob-eyebrow">Récupération post-laser</div>
-    <div class="ob-title">Laser CO₂<br><em>Fractionné</em></div>
-    <div class="ob-sub">Ta routine personnalisée pour les 8 semaines de récupération. L'app s'adapte automatiquement à ta phase selon la date de ton traitement.</div>
-    <div class="ob-form">
-      <div class="ob-label">Date du traitement laser</div>
-      <input type="date" id="laserDate" class="ob-date-input" onchange="checkDate()">
-      <button class="ob-cta" id="obCta" onclick="startApp()" disabled style="opacity:.4">Commencer ma récupération</button>
-      <div class="ob-hint">Tes données restent sur ton téléphone uniquement</div>
+  <div class="ob-inner">
+
+    <!-- Step 1: Date -->
+    <div class="ob-step active" id="obs1">
+      <div class="ob-eyebrow">Récupération post-laser</div>
+      <div class="ob-h1">Laser CO₂<br><em>Fractionné</em></div>
+      <div class="ob-p">Ton assistant de récupération personnalisé. L'app suit automatiquement ta phase, te rappelle tes routines et garde un journal de tolérance de ta peau.</div>
+      <div class="ob-form">
+        <div class="ob-lbl">Date du traitement laser</div>
+        <input type="date" id="laserDateInput" class="ob-input" oninput="checkOb1()">
+        <button class="ob-cta" id="ob1btn" onclick="goStep(2)" disabled>Continuer</button>
+        <div class="ob-hint">Tes données restent uniquement sur ton téléphone</div>
+      </div>
     </div>
+
+    <!-- Step 2: Skin type -->
+    <div class="ob-step" id="obs2">
+      <div class="ob-progress">
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot"></div>
+      </div>
+      <div class="ob-q">Quel est ton phototype ?</div>
+      <div class="ob-qs">Ça influence les précautions SPF et le risque de taches post-inflammatoires.</div>
+      <div class="ob-choices" id="ptChoices">
+        <div class="ob-choice" data-v="clair" onclick="selectOb(this,'pt')">
+          <div class="ob-choice-icon">🌸</div><div><div class="ob-choice-text">Clair (I–II)</div><div class="ob-choice-sub">Rougit facilement, bronze peu</div></div>
+        </div>
+        <div class="ob-choice" data-v="moyen" onclick="selectOb(this,'pt')">
+          <div class="ob-choice-icon">🌿</div><div><div class="ob-choice-text">Intermédiaire (III–IV)</div><div class="ob-choice-sub">Bronze progressivement</div></div>
+        </div>
+        <div class="ob-choice" data-v="fonce" onclick="selectOb(this,'pt')">
+          <div class="ob-choice-icon">🌑</div><div><div class="ob-choice-text">Foncé (V–VI)</div><div class="ob-choice-sub">Risque PIH plus élevé — vigilance SPF+</div></div>
+        </div>
+      </div>
+      <button class="ob-next" id="ob2btn" onclick="goStep(3)" disabled>Continuer</button>
+      <button class="ob-skip" onclick="goStep(3)">Passer cette étape</button>
+    </div>
+
+    <!-- Step 3: Retinal experience -->
+    <div class="ob-step" id="obs3">
+      <div class="ob-progress">
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+        <div class="ob-prog-dot done"></div>
+      </div>
+      <div class="ob-q">Ton expérience avec le rétinal ?</div>
+      <div class="ob-qs">Ça détermine la vitesse de réintroduction recommandée.</div>
+      <div class="ob-choices" id="retChoices">
+        <div class="ob-choice" data-v="jamais" onclick="selectOb(this,'ret')">
+          <div class="ob-choice-icon">🔰</div><div><div class="ob-choice-text">Jamais utilisé</div><div class="ob-choice-sub">Introduction très progressive conseillée</div></div>
+        </div>
+        <div class="ob-choice" data-v="parfois" onclick="selectOb(this,'ret')">
+          <div class="ob-choice-icon">⚗️</div><div><div class="ob-choice-text">Utilisé avant le laser</div><div class="ob-choice-sub">Ma peau le tolère bien en général</div></div>
+        </div>
+      </div>
+      <button class="ob-next" id="ob3btn" onclick="finishOnboard()" disabled>Commencer ma récupération</button>
+      <button class="ob-skip" onclick="finishOnboard()">Passer cette étape</button>
+    </div>
+
   </div>
 </div>
 
-<!-- MAIN APP -->
-<div id="screen-app" class="screen hidden">
-
-  <div class="header">
-    <div class="header-top">
-      <div class="header-left">
-        <div class="day-chip">
-          <div class="day-chip-dot"></div>
-          <div class="day-chip-text" id="dayChipText">J+14</div>
-        </div>
-        <div class="header-title">Post-<span>Laser</span></div>
-        <div class="header-sub" id="headerSub">Semaines de récupération</div>
+<!-- ══ APP ══ -->
+<div id="app" class="screen gone">
+  <div class="hdr">
+    <div class="hdr-row">
+      <div class="hdr-left">
+        <div class="day-pill"><div class="day-pill-dot"></div><div class="day-pill-txt" id="dayTxt">J+14</div></div>
+        <div class="hdr-title">Post-<span>Laser</span></div>
+        <div class="hdr-sub" id="hdrSub">Récupération</div>
       </div>
-      <button class="notif-btn" id="notifBtn" onclick="openModal('notif')">Rappels</button>
+      <div class="hdr-right">
+        <div class="streak-chip" onclick="openM('streak')" id="streakChip">
+          <div class="streak-fire">🔥</div>
+          <div class="streak-n" id="streakN">0</div>
+        </div>
+        <button class="notif-btn" id="notifBtn" onclick="openM('notif')">Rappels</button>
+      </div>
     </div>
-    <div class="phase-bar">
-      <div class="phase-bar-track"><div class="phase-bar-fill" id="phaseBarFill" style="width:0%"></div></div>
-      <div class="phase-labels">
-        <span class="phase-label" id="pl0">J+14</span>
-        <span class="phase-label" id="pl1">J+21</span>
-        <span class="phase-label" id="pl2">J+28</span>
-        <span class="phase-label" id="pl3">J+42</span>
-        <span class="phase-label" id="pl4">J+56</span>
+    <div class="phase-progress">
+      <div class="pp-track"><div class="pp-fill" id="ppFill" style="width:0%"></div></div>
+      <div class="pp-labels">
+        <span class="pp-lbl" id="ppl0">J+14</span>
+        <span class="pp-lbl" id="ppl1">J+21</span>
+        <span class="pp-lbl" id="ppl2">J+28</span>
+        <span class="pp-lbl" id="ppl3">J+42</span>
+        <span class="pp-lbl" id="ppl4">J+56</span>
       </div>
     </div>
   </div>
 
-  <div class="content-wrap">
+  <div class="cwrap">
 
     <!-- TODAY -->
-    <div id="view-today" class="view active">
-      <div class="section">
-        <div class="section-title">Aujourd'hui</div>
-        <div class="phase-card-header" id="phaseCardHeader"></div>
-        <div class="progress-summary" id="progressSummary">
-          <div class="ring-wrap">
-            <svg class="ring-svg" width="44" height="44" viewBox="0 0 44 44">
-              <circle class="ring-bg" cx="22" cy="22" r="18"/>
-              <circle class="ring-fill" id="ringFill" cx="22" cy="22" r="18" stroke-dasharray="113" stroke-dashoffset="113"/>
-            </svg>
+    <div id="v-today" class="view active">
+      <!-- Focused time hero -->
+      <div class="time-hero">
+        <div class="th-greeting" id="thGreeting">Bonjour</div>
+        <div class="th-title" id="thTitle">Routine du <strong>matin</strong></div>
+        <div class="th-sub" id="thSub">5 étapes · ~3 min</div>
+        <div class="th-tabs">
+          <div class="th-tab active" id="ttab-m" onclick="switchMoment('m')">🌤 Matin</div>
+          <div class="th-tab" id="ttab-s" onclick="switchMoment('s')">🌙 Soir</div>
+        </div>
+      </div>
+      <div class="sec">
+        <div class="prog-row">
+          <svg class="ring-svg" width="46" height="46" viewBox="0 0 46 46">
+            <circle class="ring-bg" cx="23" cy="23" r="19"/>
+            <circle class="ring-fg" id="ringFg" cx="23" cy="23" r="19" stroke-dasharray="119" stroke-dashoffset="119"/>
+          </svg>
+          <div class="prog-info">
+            <div class="prog-n" id="progN">0<sup> / 0</sup></div>
+            <div class="prog-lbl" id="progLbl">étapes complétées</div>
+            <div class="prog-done-msg" id="progDone">✓ C'est fait !</div>
           </div>
-          <div class="progress-text">
-            <div class="progress-count" id="progressCount">0<span> / 0</span></div>
-            <div class="progress-label">étapes complétées aujourd'hui</div>
+          <button class="reset-lnk" onclick="openM('reset')">Reset</button>
+        </div>
+        <!-- Phototype-adaptive SPF banner -->
+        <div id="spfBanner"></div>
+        <!-- Phase card compact -->
+        <div class="hero-card" id="heroCard"></div>
+        <!-- Active routine block -->
+        <div class="rblock">
+          <div class="rbhead">
+            <div class="rbtitle" id="activeBlockTitle">🌤 Matin</div>
+            <div class="rbsub" id="activeBlockSub">Nettoyage · Protection</div>
           </div>
-          <button class="reset-btn" onclick="openModal('reset')">Reset</button>
+          <div id="activeSteps"></div>
         </div>
-        <div class="spf-banner">
-          <div class="spf-ico">☀️</div>
-          <div><div class="spf-t">SPF 50+ — obligatoire chaque matin</div><div class="spf-s">Réappliquer toutes les 2–3h si exposition. Casquette recommandée.</div></div>
-        </div>
-        <div class="block">
-          <div class="block-header"><div class="block-title">🌤 Matin</div><div class="block-sub">Nettoyage · Protection</div></div>
-          <div id="matinSteps"></div>
-        </div>
-        <div class="block">
-          <div class="block-header"><div class="block-title">🌙 Soir</div><div class="block-sub">Réparation · Hydratation</div></div>
-          <div id="soirSteps"></div>
+        <!-- Collapsed other moment — tap to switch -->
+        <div class="rblock" style="opacity:.4;cursor:pointer" onclick="switchMoment(curMoment==='m'?'s':'m')">
+          <div class="rbhead">
+            <div class="rbtitle" id="collapsedTitle">🌙 Soir</div>
+            <div class="rbsub" style="color:var(--gold)">Voir les étapes →</div>
+          </div>
         </div>
       </div>
     </div>
 
     <!-- PLAN -->
-    <div id="view-plan" class="view">
-      <div class="section">
-        <div class="section-title">Plan sur 8 semaines</div>
-        <div class="plan-overview">
-          <div class="plan-ov-title">Ta progression visuelle</div>
-          <div class="plan-weeks" id="planWeeks"></div>
-        </div>
-        <div id="timelineContent"></div>
+    <div id="v-plan" class="view">
+      <div class="sec">
+        <div class="sec-ttl">Plan 8 semaines</div>
+        <div class="week-grid" id="weekGrid"></div>
+        <div id="tlContent"></div>
       </div>
     </div>
 
     <!-- PRODUITS -->
-    <div id="view-produits" class="view">
-      <div class="section">
-        <div class="section-title">Arsenal produits</div>
-        <div class="products-grid" id="productsList"></div>
+    <div id="v-produits" class="view">
+      <div class="sec">
+        <div class="sec-ttl">Arsenal produits</div>
+        <div class="plist" id="plist"></div>
       </div>
     </div>
 
     <!-- JOURNAL -->
-    <div id="view-journal" class="view">
-      <div class="section">
-        <div class="section-title">Journal de tolérance</div>
-        <div class="journal-add">
-          <div class="j-add-title">Comment réagit ta peau aujourd'hui ?</div>
-          <div class="j-moods" id="moodBtns">
-            <div class="j-mood" data-mood="😊" data-type="good" onclick="selectMood(this)">😊 Bien</div>
-            <div class="j-mood" data-mood="😐" data-type="neutral" onclick="selectMood(this)">😐 Neutre</div>
-            <div class="j-mood" data-mood="🔥" data-type="warn" onclick="selectMood(this)">🔥 Rougeur</div>
-            <div class="j-mood" data-mood="😬" data-type="bad" onclick="selectMood(this)">😬 Irritation</div>
-            <div class="j-mood" data-mood="✨" data-type="good" onclick="selectMood(this)">✨ Super</div>
-          </div>
-          <textarea class="j-note" id="jNote" rows="2" placeholder="Note optionnelle — ex: premier soir avec rétinal, légère chaleur..." oninput="updateJSubmit()"></textarea>
-          <button class="j-submit" id="jSubmit" onclick="addJournalEntry()" disabled>Enregistrer</button>
+    <div id="v-journal" class="view">
+      <div class="sec">
+        <div class="sec-ttl">Journal de tolérance</div>
+        <div class="j-stats" id="jStats"></div>
+        <div class="j-chart" id="jChart" style="display:none"></div>
+        <div class="j-add">
+          <div class="j-add-t">Comment réagit ta peau aujourd'hui ?</div>
+          <div class="j-qs" id="jQs"></div>
+          <textarea class="j-note" id="jNote" rows="2" placeholder="Note optionnelle — produit utilisé, observations..." oninput="updateJSave()"></textarea>
+          <button class="j-save" id="jSave" onclick="saveJournal()" disabled>Enregistrer</button>
         </div>
         <div class="j-entries" id="jEntries"></div>
       </div>
     </div>
 
     <!-- RÈGLES -->
-    <div id="view-regles" class="view">
-      <div class="section">
-        <div class="section-title">Règles importantes</div>
-        <div class="alert-box">
-          <div class="alert-title">Stop immédiat si :</div>
-          <div class="alert-body">Rougeur · Picotement · Chaleur · Peau qui tire<br><br>Revenir à la routine réparatrice de base (Centella + Sérum Barrière + hydratante) pendant 3–5 jours avant de réessayer un actif.</div>
+    <div id="v-regles" class="view">
+      <div class="sec">
+        <div class="sec-ttl">Règles importantes</div>
+        <!-- Phototype-specific banner injected by JS -->
+        <div id="ptBanner"></div>
+        <div class="alert-card">
+          <div class="alert-t">Stop immédiat si :</div>
+          <div class="alert-b">Rougeur · Picotement · Chaleur · Peau qui tire<br><br>Revenir à la routine réparatrice de base (Centella + Sérum Barrière + hydratante) pendant 3–5 jours avant de réessayer.</div>
         </div>
-        <div class="rule-list">
-          <div class="rule-item"><div class="rule-ico">⛔</div><div class="rule-txt">Pas de gommage, acides ni rétinoïdes tant que la peau est sensible ou rosée</div></div>
-          <div class="rule-item"><div class="rule-ico">⛔</div><div class="rule-txt">Sauna, hammam, sport intense interdits — la chaleur et la transpiration aggravent l'inflammation</div></div>
-          <div class="rule-item"><div class="rule-ico">⛔</div><div class="rule-txt">Ne jamais appliquer rétinal et acide salicylique le même soir</div></div>
-          <div class="rule-item"><div class="rule-ico">⛔</div><div class="rule-txt">Produits parfumés et after-shave alcoolisé à bannir sur la zone traitée</div></div>
-          <div class="rule-item"><div class="rule-ico">✓</div><div class="rule-txt">SPF 50+ quotidien pendant 6–8 semaines minimum — priorité absolue contre l'hyperpigmentation post-inflammatoire</div></div>
-          <div class="rule-item"><div class="rule-ico">✓</div><div class="rule-txt">Réappliquer toutes les 2–3h en cas d'exposition extérieure. Porter une casquette.</div></div>
-          <div class="rule-item"><div class="rule-ico">✓</div><div class="rule-txt">Rétinal : toujours mettre l'hydratante PAR-DESSUS, jamais seul sur une peau sèche</div></div>
-          <div class="rule-item"><div class="rule-ico">💡</div><div class="rule-txt">Objectif : préserver le résultat du laser et éviter les taches post-inflammatoires. La patience ici vaut de l'or.</div></div>
+        <div class="rules">
+          <div class="rule"><div class="rule-i">⛔</div><div class="rule-t">Pas de gommage, acides ni rétinoïdes tant que la peau est sensible ou rosée</div></div>
+          <div class="rule"><div class="rule-i">⛔</div><div class="rule-t">Sauna, hammam, sport intense — la chaleur et la transpiration aggravent l'inflammation</div></div>
+          <div class="rule"><div class="rule-i">⛔</div><div class="rule-t">Ne jamais appliquer rétinal et acide salicylique le même soir</div></div>
+          <div class="rule"><div class="rule-i">⛔</div><div class="rule-t">Produits parfumés et after-shave alcoolisé sur la zone traitée</div></div>
+          <div class="rule"><div class="rule-i">✓</div><div class="rule-t">SPF 50+ quotidien pendant 6–8 semaines — priorité absolue contre l'hyperpigmentation post-inflammatoire</div></div>
+          <div class="rule"><div class="rule-i">✓</div><div class="rule-t">Réappliquer toutes les 2–3h en cas d'exposition. Casquette et ombre recommandées.</div></div>
+          <div class="rule"><div class="rule-i">✓</div><div class="rule-t">Rétinal : toujours appliquer l'hydratante PAR-DESSUS, jamais sur peau sèche</div></div>
+          <div class="rule" id="retinalRule"><div class="rule-i">💡</div><div class="rule-t">Introduction rétinal : commencer 2 soirs/semaine max, petite quantité, surveiller 48h après chaque utilisation</div></div>
+          <div class="rule"><div class="rule-i">💡</div><div class="rule-t">La patience ici vaut de l'or — chaque jour de SPF protège le résultat du laser</div></div>
         </div>
       </div>
     </div>
 
-  </div><!-- /content-wrap -->
+  </div>
 
   <div class="nav">
-    <div class="nav-item active" id="nav-today" onclick="switchTab('today',0)">
-      <div class="nav-ic">◈</div><div class="nav-lbl">Aujourd'hui</div><div class="nav-indicator"></div>
-    </div>
-    <div class="nav-item" id="nav-plan" onclick="switchTab('plan',1)">
-      <div class="nav-ic">⟋</div><div class="nav-lbl">Plan</div><div class="nav-indicator"></div>
-    </div>
-    <div class="nav-item" id="nav-produits" onclick="switchTab('produits',2)">
-      <div class="nav-ic">⬡</div><div class="nav-lbl">Produits</div><div class="nav-indicator"></div>
-    </div>
-    <div class="nav-item" id="nav-journal" onclick="switchTab('journal',3)">
-      <div class="nav-ic">◎</div><div class="nav-lbl">Journal</div><div class="nav-indicator"></div>
-    </div>
-    <div class="nav-item" id="nav-regles" onclick="switchTab('regles',4)">
-      <div class="nav-ic">⚑</div><div class="nav-lbl">Règles</div><div class="nav-indicator"></div>
-    </div>
+    <div class="ni active" id="ni-today" onclick="tab('today',0)"><div class="ni-ic">◈</div><div class="ni-lbl">Aujourd'hui</div><div class="ni-bar"></div></div>
+    <div class="ni" id="ni-plan" onclick="tab('plan',1)"><div class="ni-ic">⟋</div><div class="ni-lbl">Plan</div><div class="ni-bar"></div></div>
+    <div class="ni" id="ni-produits" onclick="tab('produits',2)"><div class="ni-ic">⬡</div><div class="ni-lbl">Produits</div><div class="ni-bar"></div></div>
+    <div class="ni" id="ni-journal" onclick="tab('journal',3)"><div class="ni-ic">◎</div><div class="ni-lbl">Journal</div><div class="ni-bar"></div></div>
+    <div class="ni" id="ni-regles" onclick="tab('regles',4)"><div class="ni-ic">⚑</div><div class="ni-lbl">Règles</div><div class="ni-bar"></div></div>
   </div>
 </div>
 
-<!-- MODAL RAPPELS -->
-<div class="modal-overlay" id="modal-notif" onclick="closeModalIfOutside(event,'notif')">
-  <div class="modal">
-    <div class="modal-handle"></div>
-    <div class="modal-title">Rappels</div>
-    <div class="modal-sub">Notifications quotidiennes pour ta routine</div>
-    <div class="notif-list" id="notifList"></div>
-    <button class="modal-cta" onclick="activateNotifs()">Activer les rappels</button>
-    <button class="modal-dismiss" onclick="closeModal('notif')">Fermer</button>
+<!-- MODALS -->
+<div class="moverlay" id="m-notif" onclick="closeM('notif',event)">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttl">Rappels</div><div class="msub">Notifications quotidiennes automatiques</div>
+    <div class="nlist" id="nlist"></div>
+    <button class="mcta" onclick="activateNotifs()">Activer les rappels</button>
+    <button class="mdismiss" onclick="closeM('notif')">Fermer</button>
   </div>
 </div>
 
-<!-- MODAL RESET -->
-<div class="modal-overlay" id="modal-reset" onclick="closeModalIfOutside(event,'reset')">
-  <div class="reset-modal">
-    <div class="modal-handle"></div>
-    <div class="rm-title">Reset des cases</div>
-    <div class="rm-sub">Remettre à zéro les étapes cochées d'aujourd'hui pour recommencer ta routine.</div>
-    <div class="rm-btns">
-      <button class="rm-btn-danger" onclick="resetTodaySteps()">Remettre à zéro</button>
-      <button class="rm-btn-cancel" onclick="closeModal('reset')">Annuler</button>
-    </div>
+<div class="moverlay" id="m-streak" onclick="closeM('streak',event)">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttl">Streak SPF 🔥</div>
+    <div class="msub" id="streakSub">Jours consécutifs de routine complète</div>
+    <div class="streak-days" id="streakDays"></div>
+    <button class="mdismiss" onclick="closeM('streak')">Fermer</button>
+  </div>
+</div>
+
+<div class="moverlay" id="m-reset" onclick="closeM('reset',event)">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttl">Remettre à zéro</div>
+    <div class="msub">Effacer les étapes cochées d'aujourd'hui</div>
+    <button class="mcta" style="background:var(--red);margin-bottom:0" onclick="doReset()">Remettre à zéro</button>
+    <button class="mdismiss" onclick="closeM('reset')">Annuler</button>
+  </div>
+</div>
+
+<div class="moverlay" id="m-phase" onclick="closeM('phase',event)">
+  <div class="msheet">
+    <div class="mhandle"></div>
+    <div class="mttl" id="phaseModalT">Passer à la phase suivante ?</div>
+    <div class="msub" id="phaseModalS">Vérifie ces points avant de continuer</div>
+    <div class="pv-checks" id="pvChecks"></div>
+    <button class="mcta" id="pvCta" onclick="validatePhase()" disabled style="opacity:.38">Confirmer le passage</button>
+    <button class="mdismiss" onclick="closeM('phase')">Pas encore</button>
   </div>
 </div>
 
 <div class="toast" id="toast"></div>
 
+<div class="celeb" id="celeb">
+  <div class="celeb-emoji" id="celebEmoji">🎉</div>
+  <div class="celeb-t" id="celebT">Bravo !</div>
+  <div class="celeb-s" id="celebS"></div>
+  <button class="celeb-btn" onclick="closeCeleb()">Continuer</button>
+</div>
+
 <script>
-// ──────────────────────────────────────────────
-// DATA
-// ──────────────────────────────────────────────
+// ══ PRODUCT IMAGES (embedded SVG) ══
+const IMGS = {
+"NMF":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzBFMUQyQSIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjNUJBM0M0IiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiM1QkEzQzQiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjNUJBM0M0IiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzVCQTNDNCI+Tk1GPC90ZXh0Pjx0ZXh0IHg9IjI3IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InN5c3RlbS11aSIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjNUJBM0M0IiBvcGFjaXR5PSIwLjY1Ij5DZXJhbWlkZXM8L3RleHQ+PC9zdmc+",
+"SBS":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzBFMUYxMiIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjNTJBODc0IiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiM1MkE4NzQiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjNTJBODc0IiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzUyQTg3NCI+U29vdGhpbmc8L3RleHQ+PHRleHQgeD0iMjciIHk9IjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic3lzdGVtLXVpIiBmb250LXNpemU9IjciIGZvbnQtd2VpZ2h0PSI1MDAiIGZpbGw9IiM1MkE4NzQiIG9wYWNpdHk9IjAuNjUiPkJhcnJpZXI8L3RleHQ+PC9zdmc+",
+"CFA":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzBDMUEwRSIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjNEE5RTVFIiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiM0QTlFNUUiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjNEE5RTVFIiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzRBOUU1RSI+Q2VudGVsbGE8L3RleHQ+PHRleHQgeD0iMjciIHk9IjUwIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIiBmb250LWZhbWlseT0ic3lzdGVtLXVpIiBmb250LXNpemU9IjciIGZvbnQtd2VpZ2h0PSI1MDAiIGZpbGw9IiM0QTlFNUUiIG9wYWNpdHk9IjAuNjUiPkFtcG91bGU8L3RleHQ+PC9zdmc+",
+"GEL":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzBFMTQyMiIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjNUE3RUM0IiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiM1QTdFQzQiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjNUE3RUM0IiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iIzVBN0VDNCI+R2VsPC90ZXh0Pjx0ZXh0IHg9IjI3IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InN5c3RlbS11aSIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjNUE3RUM0IiBvcGFjaXR5PSIwLjY1Ij5DcmVhbTwvdGV4dD48L3N2Zz4=",
+"SPF":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzIwMUEwOCIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjRDRBMDQwIiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiNENEEwNDAiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjRDRBMDQwIiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0Q0QTA0MCI+U1BGPC90ZXh0Pjx0ZXh0IHg9IjI3IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InN5c3RlbS11aSIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjRDRBMDQwIiBvcGFjaXR5PSIwLjY1Ij41MCs8L3RleHQ+PC9zdmc+",
+"RET":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzIwMTQwOCIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjQzg5MDMwIiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiNDODkwMzAiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjQzg5MDMwIiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0M4OTAzMCI+UmV0aW5hbDwvdGV4dD48dGV4dCB4PSIyNyIgeT0iNTAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iNyIgZm9udC13ZWlnaHQ9IjUwMCIgZmlsbD0iI0M4OTAzMCIgb3BhY2l0eT0iMC42NSI+MC4yJTwvdGV4dD48L3N2Zz4=",
+"SA2":"data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NCIgaGVpZ2h0PSI1NCIgdmlld0JveD0iMCAwIDU0IDU0Ij48cmVjdCB3aWR0aD0iNTQiIGhlaWdodD0iNTQiIHJ4PSIxMCIgZmlsbD0iIzFFMEMwOCIvPjxyZWN0IHg9IjE5IiB5PSI3IiB3aWR0aD0iMTYiIGhlaWdodD0iMjYiIHJ4PSI0IiBmaWxsPSIjQzQ1MDQwIiBvcGFjaXR5PSIwLjI1Ii8+PHJlY3QgeD0iMjEiIHk9IjkiIHdpZHRoPSIxMiIgaGVpZ2h0PSIyMiIgcng9IjMiIGZpbGw9IiNDNDUwNDAiIG9wYWNpdHk9IjAuNDUiLz48cmVjdCB4PSIyMyIgeT0iMTEiIHdpZHRoPSI4IiBoZWlnaHQ9IjQiIHJ4PSIxIiBmaWxsPSIjQzQ1MDQwIiBvcGFjaXR5PSIwLjYiLz48dGV4dCB4PSIyNyIgeT0iNDAiIHRleHQtYW5jaG9yPSJtaWRkbGUiIGZvbnQtZmFtaWx5PSJzeXN0ZW0tdWkiIGZvbnQtc2l6ZT0iOCIgZm9udC13ZWlnaHQ9IjcwMCIgZmlsbD0iI0M0NTA0MCI+U2FsaWN5bGljPC90ZXh0Pjx0ZXh0IHg9IjI3IiB5PSI1MCIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZm9udC1mYW1pbHk9InN5c3RlbS11aSIgZm9udC1zaXplPSI3IiBmb250LXdlaWdodD0iNTAwIiBmaWxsPSIjQzQ1MDQwIiBvcGFjaXR5PSIwLjY1Ij5BY2lkIDIlPC90ZXh0Pjwvc3ZnPg=="
+};
+
+// ══ DATA ══
 const PHASES = [
-  {
-    range:[14,20], label:'J+14 → J+21', name:'Réparation pure',
-    tags:[{t:'Barrière cutanée',cl:'tag-repair'},{t:'Zéro actif',cl:'tag-info'}],
-    matin:[
-      {n:'Nettoyant doux',note:'Eau tiède, sans friction'},
-      {n:'Centella Ampoule',note:'Ou Sérum Barrière — alternez selon votre peau'},
-      {n:'NMF + PhytoCeramides',note:'Hydratation de base — ne pas skipper'},
-      {n:'Gel Crème léger',note:'Pour le confort extra si besoin'},
-      {n:'SPF 50+',note:'Toujours en dernière couche'},
-    ],
-    soir:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella Ampoule',note:'Ou Sérum Barrière'},
-      {n:'NMF + PhytoCeramides',note:null},
-      {n:'Gel Crème Poremizing',note:'Sceller l\'hydratation'},
-    ]
-  },
-  {
-    range:[21,27], label:'J+21 → J+28', name:'Introduction rétinal',
-    tags:[{t:'Rétinal 2×/sem max',cl:'tag-intro'},{t:'Surveillance',cl:'tag-info'}],
-    matin:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'NMF + PhytoCeramides',note:null},
-      {n:'SPF 50+',note:'Obligatoire'},
-    ],
-    soir:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'Rétinal 0.2%',note:'Max 2 soirs/sem · petite quantité · introduire doucement',pill:'pill-intro',pl:'INTRO'},
-      {n:'NMF + Gel Crème',note:'PAR-DESSUS le rétinal — toujours'},
-    ]
-  },
-  {
-    range:[28,41], label:'J+28 → J+42', name:'Montée progressive',
-    tags:[{t:'Rétinal 3×/sem',cl:'tag-intro'},{t:'Hydratation renforcée',cl:'tag-repair'}],
-    matin:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'NMF + PhytoCeramides',note:null},
-      {n:'SPF 50+',note:'Toujours'},
-    ],
-    soir:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'Rétinal 0.2%',note:'2–3 soirs/sem si bien toléré',pill:'pill-intro',pl:'PROGRESSIF'},
-      {n:'NMF + Gel Crème',note:'Hydratation renforcée'},
-    ]
-  },
-  {
-    range:[42,56], label:'J+42 → J+56', name:'Retour des actifs',
-    tags:[{t:'Rétinal 1 soir/2',cl:'tag-active'},{t:'SA 1×/sem',cl:'tag-intro'}],
-    matin:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'NMF + PhytoCeramides',note:null},
-      {n:'SPF 50+',note:'Toujours obligatoire'},
-    ],
-    soir:[
-      {n:'Nettoyant doux',note:null},
-      {n:'Centella ou Sérum Barrière',note:null},
-      {n:'Rétinal 0.2%',note:'1 soir sur 2 si toléré · jamais avec SA',pill:'pill-active',pl:'ACTIF'},
-      {n:'OU Acide Salicylique 2%',note:'1×/semaine · pas le soir du rétinal · seulement si bien toléré',pill:'pill-intro',pl:'1×/SEM'},
-      {n:'NMF + Gel Crème',note:'Toujours en dernier'},
-    ]
-  }
+  {range:[14,20],lbl:'J+14 → J+21',name:'Réparation pure',
+   tags:[{t:'Barrière cutanée',c:'tg'},{t:'Zéro actif',c:'tb'}],
+   nextChecks:['Peau fermée en surface, pas de croûtes','Pas de rougeur persistante ou de chaleur','7 jours de routine complète'],
+   matin:[{n:'Nettoyant doux',no:'Eau tiède, sans friction'},{n:'Centella Ampoule',no:'Ou Sérum Barrière — selon ta peau'},{n:'NMF + PhytoCeramides',no:'Hydratation de base — ne pas skipper'},{n:'Gel Crème léger',no:'Si besoin de confort extra'},{n:'SPF 50+',no:'Toujours en dernière couche'}],
+   soir:[{n:'Nettoyant doux',no:null},{n:'Centella Ampoule',no:'Ou Sérum Barrière en alternance'},{n:'NMF + PhytoCeramides',no:null},{n:'Gel Crème Poremizing',no:'Sceller l\'hydratation'}]},
+  {range:[21,27],lbl:'J+21 → J+28',name:'Introduction rétinal',
+   tags:[{t:'Rétinal 2×/sem',c:'ta'},{t:'Surveillance',c:'tb'}],
+   nextChecks:['Rétinal 0.2% toléré 2 soirs sans irritation','Peau sans rougeur après application','Hydratante appliquée PAR-DESSUS systématiquement'],
+   matin:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'NMF + PhytoCeramides',no:null},{n:'SPF 50+',no:'Obligatoire'}],
+   soir:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'Rétinal 0.2%',no:'Max 2 soirs/sem · petite quantité',pill:'pi',pl:'INTRO'},{n:'NMF + Gel Crème',no:'PAR-DESSUS le rétinal — toujours'}]},
+  {range:[28,41],lbl:'J+28 → J+42',name:'Montée progressive',
+   tags:[{t:'Rétinal 3×/sem',c:'ta'},{t:'Hydratation +',c:'tg'}],
+   nextChecks:['Rétinal toléré 3 soirs/semaine sans réaction','Peau stable, pas de sensibilité accrue','SPF appliqué chaque jour sans exception'],
+   matin:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'NMF + PhytoCeramides',no:null},{n:'SPF 50+',no:'Toujours'}],
+   soir:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'Rétinal 0.2%',no:'2–3 soirs/sem si bien toléré',pill:'pi',pl:'PROGRESSIF'},{n:'NMF + Gel Crème',no:'Hydratation renforcée'}]},
+  {range:[42,56],lbl:'J+42 → J+56',name:'Retour des actifs',
+   tags:[{t:'Rétinal 1 soir/2',c:'tr'},{t:'SA 1×/sem',c:'ta'}],
+   nextChecks:['Phase finale — maintenir la routine SPF'],
+   matin:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'NMF + PhytoCeramides',no:null},{n:'SPF 50+',no:'Toujours obligatoire'}],
+   soir:[{n:'Nettoyant doux',no:null},{n:'Centella ou Sérum Barrière',no:null},{n:'Rétinal 0.2%',no:'1 soir sur 2 si toléré · jamais avec SA',pill:'pa',pl:'ACTIF'},{n:'OU Acide Salicylique 2%',no:'1×/sem · pas le soir du rétinal',pill:'pi',pl:'1×/SEM'},{n:'NMF + Gel Crème',no:'Toujours en dernier'}]}
 ];
 
 const PRODUCTS = [
-  {brand:'The Ordinary',name:'Natural Moisturizing Factors + PhytoCeramides',role:'Hydratation · réparation barrière cutanée',abbr:'NMF',bg:'#162030',when:'pw-now',wl:'Dès maintenant',
-   img:'https://www.sephora.com/productimages/sku/s2537491-main-zoom.jpg'},
-  {brand:'The Ordinary',name:'Soothing & Barrier Support Serum',role:'Apaisement · reconstruction barrière',abbr:'SBS',bg:'#162416',when:'pw-now',wl:'Dès maintenant',
-   img:'https://images.asos-media.com/products/the-ordinary-soothing-barrier-support-serum-30ml/206005817-1-white'},
-  {brand:'SKIN1004',name:'Centella Poremizing Fresh Ampoule',role:'Cicatrisant · calmant · anti-rougeur',abbr:'CFA',bg:'#142016',when:'pw-now',wl:'Dès maintenant',
-   img:'https://images.beautyhaul.co.uk/images/1004_centella_ampoule.jpg'},
-  {brand:'SKIN1004',name:'Poremizing Light Gel Cream',role:'Hydratation légère · texture non-grasse',abbr:'GEL',bg:'#14182A',when:'pw-now',wl:'Dès maintenant',
-   img:'https://images.beautyhaul.co.uk/images/1004_gel_cream.jpg'},
-  {brand:'',name:'Crème solaire SPF 50+',role:'Protection UV · prévention hyperpigmentation',abbr:'SPF',bg:'#242010',when:'pw-now',wl:'Chaque matin',img:null},
-  {brand:'The Ordinary',name:'Retinal 0.2% Emulsion',role:'Renouvellement cellulaire · anti-âge actif',abbr:'RET',bg:'#22180A',when:'pw-w3',wl:'À partir de J+21',
-   img:'https://www.sephora.com/productimages/sku/s2593479-main-zoom.jpg'},
-  {brand:'The Ordinary',name:'Salicylic Acid 2% Solution',role:'Exfoliant chimique · pores · texture',abbr:'SA2',bg:'#22100A',when:'pw-w6',wl:'À partir de J+42',
-   img:'https://www.sephora.com/productimages/sku/s2060706-main-zoom.jpg'},
+  {brand:'The Ordinary',name:'Natural Moisturizing Factors + PhytoCeramides',role:'Hydratation · réparation barrière cutanée',img:'NMF',when:0,wl:'Dès maintenant'},
+  {brand:'The Ordinary',name:'Soothing & Barrier Support Serum',role:'Apaisement · reconstruction barrière',img:'SBS',when:0,wl:'Dès maintenant'},
+  {brand:'SKIN1004',name:'Centella Poremizing Fresh Ampoule',role:'Cicatrisant · calmant · anti-rougeur',img:'CFA',when:0,wl:'Dès maintenant'},
+  {brand:'SKIN1004',name:'Poremizing Light Gel Cream',role:'Hydratation légère · texture non-grasse',img:'GEL',when:0,wl:'Dès maintenant'},
+  {brand:'',name:'Crème solaire SPF 50+',role:'Protection UV · prévention hyperpigmentation',img:'SPF',when:0,wl:'Chaque matin'},
+  {brand:'The Ordinary',name:'Retinal 0.2% Emulsion',role:'Renouvellement cellulaire · anti-âge',img:'RET',when:1,wl:'À partir de J+21'},
+  {brand:'The Ordinary',name:'Salicylic Acid 2% Solution',role:'Exfoliant chimique · pores · sébum',img:'SA2',when:2,wl:'À partir de J+42'},
 ];
 
 const NOTIFS = [
   {id:'spf_m',e:'☀️',n:'Crème solaire SPF 50+',t:'08:00',d:'Applique avant de sortir',on:true},
   {id:'spf_n',e:'🌞',n:'Réapplication SPF',t:'12:30',d:'Si tu es sortie ce matin',on:true},
-  {id:'spf_a',e:'🌤',n:'Réapplication SPF',t:'15:00',d:'En cas d\'exposition',on:false},
   {id:'soir',e:'🌙',n:'Routine du soir',t:'21:00',d:'Nettoyage · Sérum · Hydratation',on:true},
+  {id:'spf_a',e:'🌤',n:'Réapplication SPF après-midi',t:'15:00',d:'En cas d\'exposition',on:false},
   {id:'hydra',e:'💧',n:'Hydratation',t:'14:00',d:'Si sensation de tiraillement',on:false},
 ];
 
-// ──────────────────────────────────────────────
-// STATE  (localStorage persistence)
-// ──────────────────────────────────────────────
-function load(k,def){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):def;}catch(e){return def;}}
-function save(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch(e){}}
+const J_QUESTIONS = [
+  {id:'global',q:'Sensation globale de la peau',opts:[{l:'Bien 😊',v:'ok',c:'sel-ok'},{l:'Neutre 😐',v:'neu',c:'sel-neu'},{l:'Sensible 🔥',v:'warn',c:'sel-warn'},{l:'Irritée 😬',v:'bad',c:'sel-bad'}]},
+  {id:'spf',q:'SPF appliqué aujourd\'hui ?',opts:[{l:'Oui ✓',v:'ok',c:'sel-ok'},{l:'Non',v:'bad',c:'sel-bad'}]},
+  {id:'retinal',q:'Rétinal utilisé ce soir ?',opts:[{l:'Oui',v:'ok',c:'sel-ok'},{l:'Non',v:'neu',c:'sel-neu'},{l:'Pas encore en phase',v:'neu',c:'sel-neu'}]},
+];
 
-let laserDate = load('laserDate', null);
-let notifState = load('notifState', {});
-let journalEntries = load('journalEntries', []);
-let checkedSteps = load('checkedSteps', {});
+// ══ STATE ══
+function ls(k,d){try{const v=localStorage.getItem(k);return v!==null?JSON.parse(v):d;}catch{return d;}}
+function ss(k,v){try{localStorage.setItem(k,JSON.stringify(v));}catch{}}
 
-// Init notif defaults
-NOTIFS.forEach(n => { if(notifState[n.id]===undefined) notifState[n.id]=n.on; });
+let laserDate=ls('laserDate',null);
+let profile=ls('profile',{pt:'moyen',ret:'parfois'});
+let notifState=ls('notifState',{});
+let journal=ls('journal',[]);
+let checks=ls('checks',{});
+let streakData=ls('streakData',{});
+let phaseOverride=ls('phaseOverride',null);
 
-let currentTab = 'today';
-const tabOrder = ['today','plan','produits','journal','regles'];
-let selectedMood = null;
-let currentPhaseIdx = 0;
+NOTIFS.forEach(n=>{if(notifState[n.id]===undefined)notifState[n.id]=n.on;});
 
-// ──────────────────────────────────────────────
-// INIT
-// ──────────────────────────────────────────────
-function init() {
-  if (laserDate) {
-    showApp();
-  } else {
-    // Set default date to today - 14 days for convenience
-    const d = new Date(); d.setDate(d.getDate()-14);
-    document.getElementById('laserDate').value = d.toISOString().split('T')[0];
-    checkDate();
-  }
+let curTab='today',curStep=1,obSelections={};
+const tabOrder=['today','plan','produits','journal','regles'];
+
+// ══ ONBOARDING ══
+function checkOb1(){
+  const v=document.getElementById('laserDateInput').value;
+  document.getElementById('ob1btn').disabled=!v;
+}
+function selectOb(el,group){
+  el.closest('.ob-choices').querySelectorAll('.ob-choice').forEach(c=>c.classList.remove('sel'));
+  el.classList.add('sel');
+  obSelections[group]=el.dataset.v;
+  document.getElementById(group==='pt'?'ob2btn':'ob3btn').disabled=false;
+}
+function goStep(n){
+  document.getElementById('obs'+curStep).classList.remove('active');
+  curStep=n;
+  document.getElementById('obs'+n).classList.add('active');
+}
+function finishOnboard(){
+  laserDate=document.getElementById('laserDateInput').value;
+  if(obSelections.pt) profile.pt=obSelections.pt;
+  if(obSelections.ret) profile.ret=obSelections.ret;
+  ss('laserDate',laserDate); ss('profile',profile);
+  document.getElementById('ob').classList.add('gone');
+  document.getElementById('app').classList.remove('gone');
+  document.getElementById('app').offsetHeight;
+  boot();
 }
 
-function checkDate() {
-  const v = document.getElementById('laserDate').value;
-  const btn = document.getElementById('obCta');
-  if (v) { btn.disabled=false; btn.style.opacity='1'; }
-  else { btn.disabled=true; btn.style.opacity='.4'; }
-}
-
-function startApp() {
-  laserDate = document.getElementById('laserDate').value;
-  save('laserDate', laserDate);
-  showApp();
-}
-
-function showApp() {
-  const ob = document.getElementById('screen-onboard');
-  const app = document.getElementById('screen-app');
-  ob.classList.add('hidden');
-  app.classList.remove('hidden');
-  // force reflow before animating in
-  app.offsetHeight;
-  setupApp();
-}
-
-function setupApp() {
-  const dayN = getDayNumber();
-  currentPhaseIdx = getPhaseIdx(dayN);
-  updateHeader(dayN);
-  updatePhaseBar(dayN);
-  renderPhaseCard();
-  renderRoutine();
+// ══ BOOT ══
+function boot(){
+  if(!laserDate){document.getElementById('app').classList.add('gone');document.getElementById('ob').classList.remove('gone');return;}
+  const d=dayN();
+  const pi=phaseOverride!==null?Math.min(phaseOverride,PHASES.length-1):phaseIdx(d);
+  initTimeHero();
+  updateHeader(d,pi);
+  updatePhaseBar(d);
+  renderSPFBanner();
+  renderPtBanner();
+  renderHeroCard(pi);
+  renderRoutine(pi);
   renderProducts();
-  renderTimeline(dayN);
-  renderPlanWeeks(dayN);
-  renderJournal();
-  updateProgress();
-
-  // Check if steps need daily reset
-  const today = new Date().toDateString();
-  if (checkedSteps._date !== today) {
-    checkedSteps = {_date: today};
-    save('checkedSteps', checkedSteps);
+  renderTimeline(d,pi);
+  renderWeekGrid(d);
+  renderJournalView();
+  dailyReset();
+  updateProgress(pi);
+  updateStreak(d);
+  if(/iphone|ipad|ipod/i.test(navigator.userAgent)&&!window.navigator.standalone&&!window.matchMedia('(display-mode: standalone)').matches){
+    setTimeout(()=>toast('💡 Partager → Sur l\'écran d\'accueil'),2200);
   }
-  renderRoutine();
-  updateProgress();
-
-  // PWA hint
-  const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || navigator.standalone;
-  if (isIOS && !isStandalone) setTimeout(() => showToast('💡 Partager → Sur l\'écran d\'accueil'), 2000);
 }
 
-function getDayNumber() {
-  const laser = new Date(laserDate);
-  const today = new Date();
-  laser.setHours(0,0,0,0); today.setHours(0,0,0,0);
-  return Math.floor((today - laser) / 86400000);
+function dayN(){
+  const l=new Date(laserDate),t=new Date();
+  l.setHours(0,0,0,0);t.setHours(0,0,0,0);
+  return Math.floor((t-l)/86400000);
 }
-
-function getPhaseIdx(d) {
-  if (d < 21) return 0;
-  if (d < 28) return 1;
-  if (d < 42) return 2;
-  return 3;
+function phaseIdx(d){
+  if(d<21)return 0;if(d<28)return 1;if(d<42)return 2;return 3;
 }
-
-function getPhaseProgress(d) {
-  if (d < 14) return 0;
-  if (d >= 56) return 100;
+function getPct(d){
+  if(d<=14)return 0;if(d>=56)return 100;
   return Math.round(((d-14)/42)*100);
 }
 
-// ──────────────────────────────────────────────
-// HEADER & PHASE
-// ──────────────────────────────────────────────
-function updateHeader(d) {
-  document.getElementById('dayChipText').textContent = d < 0 ? 'Avant traitement' : `J+${d}`;
-  const phase = PHASES[currentPhaseIdx];
-  document.getElementById('headerSub').textContent = phase.name;
-  // highlight active phase label
-  [0,1,2,3,4].forEach(i => document.getElementById('pl'+i).classList.remove('active'));
-  if (d < 21) document.getElementById('pl0').classList.add('active');
-  else if (d < 28) document.getElementById('pl1').classList.add('active');
-  else if (d < 42) document.getElementById('pl2').classList.add('active');
-  else if (d < 56) document.getElementById('pl3').classList.add('active');
-  else document.getElementById('pl4').classList.add('active');
+function updateHeader(d,pi){
+  document.getElementById('dayTxt').textContent=d<0?'Avant J0':`J+${d}`;
+  document.getElementById('hdrSub').textContent=PHASES[pi].name;
+  [0,1,2,3,4].forEach(i=>document.getElementById('ppl'+i).classList.remove('cur'));
+  const cur=d<21?0:d<28?1:d<42?2:d<56?3:4;
+  document.getElementById('ppl'+cur).classList.add('cur');
+}
+function updatePhaseBar(d){
+  document.getElementById('ppFill').style.width=getPct(d)+'%';
 }
 
-function updatePhaseBar(d) {
-  const pct = getPhaseProgress(d);
-  document.getElementById('phaseBarFill').style.width = pct+'%';
-}
-
-function renderPhaseCard() {
-  const p = PHASES[currentPhaseIdx];
-  document.getElementById('phaseCardHeader').innerHTML = `
-    <div class="pch-phase">${p.label}</div>
-    <div class="pch-title">${p.name}</div>
-    <div class="pch-tags">${p.tags.map(t=>`<span class="pch-tag ${t.cl}">${t.t}</span>`).join('')}</div>
+function renderHeroCard(pi){
+  const p=PHASES[pi];
+  const canAdvance=pi<3&&phaseOverride===null&&dayN()>=p.range[1];
+  document.getElementById('heroCard').innerHTML=`
+    <div class="hc-phase">${p.lbl}</div>
+    <div class="hc-title">${p.name}</div>
+    <div class="hc-tags">${p.tags.map(t=>`<span class="tag ${t.c}">${t.t}</span>`).join('')}</div>
+    ${canAdvance?`<button class="phase-validate show" onclick="openPhaseValidate(${pi})">✓ Ma peau est prête — passer à la phase suivante</button>`:''}
   `;
 }
 
-// ──────────────────────────────────────────────
-// ROUTINE + STEPS
-// ──────────────────────────────────────────────
-function renderRoutine() {
-  const p = PHASES[currentPhaseIdx];
-  renderSteps('matinSteps', p.matin, 'm');
-  renderSteps('soirSteps', p.soir, 's');
+// ══ ROUTINE ══
+let curMoment = new Date().getHours() < 18 ? 'm' : 's'; // auto matin/soir
+
+function initTimeHero(){
+  const h = new Date().getHours();
+  const isAm = h < 12, isPm = h < 18;
+  const greet = h < 12 ? 'Bonjour' : h < 18 ? 'Bon après-midi' : 'Bonsoir';
+  document.getElementById('thGreeting').textContent = greet;
+  curMoment = h < 18 ? 'm' : 's';
+  updateMomentUI();
 }
 
-function renderSteps(cid, steps, pfx) {
-  document.getElementById(cid).innerHTML = steps.map((s,i) => {
-    const key = `${pfx}_${i}`;
-    const done = checkedSteps[key] ? 'done' : '';
-    const pill = s.pill ? `<span class="step-pill ${s.pill}">${s.pl}</span>` : '';
-    return `<div class="step-row ${done}" onclick="toggleStep('${key}',this)">
-      <div class="chk"></div>
-      <div class="step-body">
-        <div class="step-name">${s.n}</div>
-        ${s.note ? `<div class="step-note">${s.note}</div>` : ''}
-      </div>
-      ${pill}
+function updateMomentUI(){
+  const isMatin = curMoment === 'm';
+  document.getElementById('thTitle').innerHTML = `Routine du <strong>${isMatin?'matin':'soir'}</strong>`;
+  document.getElementById('ttab-m').classList.toggle('active', isMatin);
+  document.getElementById('ttab-s').classList.toggle('active', !isMatin);
+  document.getElementById('activeBlockTitle').textContent = isMatin ? '🌤 Matin' : '🌙 Soir';
+  document.getElementById('activeBlockSub').textContent = isMatin ? 'Nettoyage · Protection' : 'Réparation · Hydratation';
+  document.getElementById('collapsedTitle').textContent = isMatin ? '🌙 Soir' : '🌤 Matin';
+}
+
+function switchMoment(m){
+  curMoment = m;
+  updateMomentUI();
+  const pi = phaseOverride!==null ? phaseOverride : phaseIdx(dayN());
+  renderCurrentSteps(pi);
+  updateProgress(pi);
+}
+
+function renderSPFBanner(){
+  const pt = profile.pt || 'moyen';
+  const isFonce = pt === 'fonce';
+  const intensity = isFonce
+    ? {bg:'var(--red-bg)',border:'var(--red-border)',color:'var(--red)',title:'⚠️ SPF 50+ — priorité absolue · phototype foncé',sub:'Ton risque de taches post-inflammatoires est élevé. SPF le matin, réapplication toutes les 2h en extérieur, chapeau.'}
+    : {bg:'var(--amber-bg)',border:'var(--amber-border)',color:'var(--amber)',title:'☀️ SPF 50+ — obligatoire chaque matin',sub:'Réappliquer toutes les 2–3h si exposition. Casquette recommandée.'};
+  document.getElementById('spfBanner').innerHTML = `
+    <div class="spf-bar" style="background:${intensity.bg};border-color:${intensity.border};margin-bottom:11px">
+      <div class="spf-ico">${isFonce?'⚠️':'☀️'}</div>
+      <div><div class="spf-t" style="color:${intensity.color}">${intensity.title}</div><div class="spf-s">${intensity.sub}</div></div>
     </div>`;
-  }).join('');
 }
 
-function toggleStep(key, row) {
-  checkedSteps[key] = !checkedSteps[key];
-  save('checkedSteps', checkedSteps);
-  row.classList.toggle('done', checkedSteps[key]);
-  updateProgress();
-}
-
-function updateProgress() {
-  const p = PHASES[currentPhaseIdx];
-  const total = p.matin.length + p.soir.length;
-  let done = 0;
-  p.matin.forEach((_,i) => { if(checkedSteps[`m_${i}`]) done++; });
-  p.soir.forEach((_,i)  => { if(checkedSteps[`s_${i}`]) done++; });
-  document.getElementById('progressCount').innerHTML = `${done}<span> / ${total}</span>`;
-  document.getElementById('progressLabel') && (document.getElementById('progressLabel').textContent = 'étapes complétées');
-  // Ring
-  const circ = 113;
-  const offset = circ - (done/total)*circ;
-  document.getElementById('ringFill').setAttribute('stroke-dashoffset', offset);
-  document.querySelector('.ring-fill').style.stroke = done===total ? 'var(--amber)' : 'var(--green)';
-}
-
-function resetTodaySteps() {
-  checkedSteps = {_date: new Date().toDateString()};
-  save('checkedSteps', checkedSteps);
-  closeModal('reset');
-  renderRoutine();
-  updateProgress();
-  showToast('Cases remises à zéro');
-}
-
-// ──────────────────────────────────────────────
-// PRODUCTS
-// ──────────────────────────────────────────────
-function renderProducts() {
-  document.getElementById('productsList').innerHTML = PRODUCTS.map(p => {
-    const img = p.img
-      ? `<img src="${p.img}" alt="${p.abbr}" loading="lazy" onerror="this.outerHTML='<span class=prod-abbr>${p.abbr}</span>'">`
-      : `<span class="prod-abbr">${p.abbr}</span>`;
-    return `<div class="product-card">
-      <div class="prod-img-wrap" style="background:${p.bg}">${img}</div>
-      <div class="prod-info">
-        ${p.brand ? `<div class="prod-brand">${p.brand}</div>` : ''}
-        <div class="prod-name">${p.name}</div>
-        <div class="prod-role">${p.role}</div>
-        <span class="prod-when ${p.when}">${p.wl}</span>
-      </div>
-    </div>`;
-  }).join('');
-}
-
-// ──────────────────────────────────────────────
-// TIMELINE + PLAN WEEKS
-// ──────────────────────────────────────────────
-function renderTimeline(d) {
-  const tl = [
-    {ph:'J+14 → J+21',title:'Réparation pure',state: d>=21?'done': d>=14?'current':'future',
-     items:['Centella ou sérum barrière matin + soir','NMF + céramides + gel crème chaque jour','SPF 50+ chaque matin — dernière couche','Zéro actif : rétinal et acides interdits']},
-    {ph:'J+21 → J+28',title:'Introduction rétinal',state: d>=28?'done': d>=21?'current':'future',
-     items:['Rétinal 0.2% max 2 soirs/semaine, petite quantité','Crème hydratante obligatoire PAR-DESSUS','Si irritation → stop et retour phase 1']},
-    {ph:'J+28 → J+42',title:'Montée progressive',state: d>=42?'done': d>=28?'current':'future',
-     items:['Rétinal 2–3 soirs/semaine si bien toléré','Hydratation renforcée systématique','Acide salicylique encore à éviter si sensible']},
-    {ph:'J+42 → J+56',title:'Retour des actifs',state: d>=56?'done': d>=42?'current':'future',
-     items:['Rétinal jusqu\'à 1 soir sur 2 si toléré','Acide salicylique 1×/semaine en introduction','Ne jamais combiner les deux le même soir']},
-  ];
-  document.getElementById('timelineContent').innerHTML = tl.map((t,i) => `
-    <div class="tl-item">
-      <div class="tl-l">
-        <div class="tl-dot ${t.state==='done'?'done':''} ${t.state==='current'?'current':''}"></div>
-        ${i<tl.length-1?'<div class="tl-line"></div>':''}
-      </div>
-      <div style="flex:1;min-width:0;padding-top:0">
-        <div class="tl-phase">${t.ph} ${t.state==='current'?'· EN COURS':''}</div>
-        <div class="tl-title">${t.title}</div>
-        <div class="tl-items">${t.items.map(x=>`<div class="tl-row">${x}</div>`).join('')}</div>
-      </div>
-    </div>`).join('');
-}
-
-function renderPlanWeeks(d) {
-  const weeks = [
-    {label:'S3',days:[14,20],type:'repair'},
-    {label:'S4',days:[21,27],type:'intro'},
-    {label:'S5',days:[28,34],type:'intro'},
-    {label:'S6',days:[35,41],type:'intro'},
-    {label:'S7',days:[42,48],type:'active'},
-    {label:'S8',days:[49,56],type:'active'},
-  ];
-  document.getElementById('planWeeks').innerHTML = weeks.map(w => {
-    const isCurrent = d >= w.days[0] && d <= w.days[1];
-    const isDone = d > w.days[1];
-    const typeMap = {repair:'repair',intro:'intro',active:'repair'};
-    const bgCls = typeMap[w.type] || 'repair';
-    let extra = isCurrent ? ' active-now' : '';
-    let style = isDone ? 'opacity:0.4' : '';
-    return `<div class="plan-week">
-      <div class="plan-week-bar ${bgCls}${extra}" style="${style}"></div>
-      <div class="plan-week-label" style="color:${isCurrent?'var(--accent)':'var(--text3)'}">${w.label}</div>
-    </div>`;
-  }).join('');
-}
-
-// ──────────────────────────────────────────────
-// JOURNAL
-// ──────────────────────────────────────────────
-function selectMood(el) {
-  document.querySelectorAll('.j-mood').forEach(m => m.classList.remove('selected','sel-good','sel-warn','sel-bad'));
-  const type = el.dataset.type;
-  const clMap = {good:'sel-good',neutral:'selected',warn:'sel-warn',bad:'sel-bad'};
-  el.classList.add(clMap[type]||'selected');
-  selectedMood = {emoji:el.dataset.mood, type};
-  updateJSubmit();
-}
-
-function updateJSubmit() {
-  const btn = document.getElementById('jSubmit');
-  const ready = selectedMood !== null;
-  btn.disabled = !ready;
-  btn.classList.toggle('ready', ready);
-}
-
-function addJournalEntry() {
-  if (!selectedMood) return;
-  const note = document.getElementById('jNote').value.trim();
-  const d = getDayNumber();
-  const entry = {
-    day: d, mood: selectedMood,
-    note, date: new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),
-    ts: Date.now()
-  };
-  journalEntries.unshift(entry);
-  save('journalEntries', journalEntries);
-  // Reset form
-  selectedMood = null;
-  document.getElementById('jNote').value = '';
-  document.querySelectorAll('.j-mood').forEach(m => m.classList.remove('selected','sel-good','sel-warn','sel-bad'));
-  updateJSubmit();
-  renderJournal();
-  showToast('Entrée enregistrée');
-}
-
-function renderJournal() {
-  const el = document.getElementById('jEntries');
-  if (!journalEntries.length) {
-    el.innerHTML = '<div class="j-empty">Aucune entrée encore.<br>Note comment réagit ta peau chaque jour —<br>ça t\'aidera à ajuster les actifs.</div>';
-    return;
+function renderPtBanner(){
+  const pt = profile.pt || 'moyen';
+  const isFonce = pt === 'fonce', isClair = pt === 'clair';
+  const isJamais = profile.ret === 'jamais';
+  const el = document.getElementById('ptBanner');
+  if(!el) return;
+  if(isFonce){
+    el.innerHTML=`<div class="alert-card" style="background:var(--red-bg);border-color:var(--red-border);margin-bottom:10px"><div class="alert-t" style="color:var(--red)">⚠️ Phototype foncé — vigilance maximale</div><div class="alert-b">Ton phototype (V–VI) est le plus à risque d'hyperpigmentation post-inflammatoire. SPF 50+ sans exception, même les jours nuageux. Évite toute exposition directe pendant 8 semaines minimum. Au moindre doute sur une tache, consulte ton dermatologue.</div></div>`;
+  } else if(isClair){
+    el.innerHTML=`<div class="alert-card" style="margin-bottom:10px"><div class="alert-t">⚡ Phototype clair — peau réactive</div><div class="alert-b">Ton phototype (I–II) est plus sensible aux rougeurs et aux réactions. Introduis le rétinal encore plus doucement (1 soir/semaine au début), et surveille attentivement 24h après chaque utilisation.</div></div>`;
+  } else { el.innerHTML=''; }
+  // Adapt retinal rule
+  const retRule = document.getElementById('retinalRule');
+  if(retRule){
+    if(isJamais||isClair){
+      retRule.querySelector('.rule-t').textContent = 'Rétinal sans expérience préalable ou peau claire : commencer 1 seul soir/semaine, quantité minimale, surveiller 48h. Augmenter très progressivement.';
+    } else if(isFonce){
+      retRule.querySelector('.rule-t').textContent = 'Rétinal sur phototype foncé : extra-prudence, 1 soir/semaine maximum, toujours avec hydratante par-dessus. Au moindre assombrissement → stop immédiat.';
+    }
   }
-  el.innerHTML = journalEntries.map(e => `
-    <div class="j-entry">
-      <div class="j-entry-top">
-        <div class="j-entry-day"><span class="j-entry-mood">${e.mood.emoji}</span>J+${e.day}</div>
-        <div class="j-entry-date">${e.date}</div>
+}
+
+function dailyReset(){
+  const today=new Date().toDateString();
+  if(checks._date!==today){checks={_date:today};ss('checks',checks);}
+}
+
+function renderRoutine(pi){
+  renderCurrentSteps(pi);
+  // update step count in subtitle
+  const p = PHASES[pi];
+  const mCount = p.matin.length, sCount = p.soir.length;
+  document.getElementById('thSub').textContent = curMoment==='m' ? `${mCount} étapes · ~3 min` : `${sCount} étapes · ~5 min`;
+}
+
+function renderCurrentSteps(pi){
+  const p = PHASES[pi];
+  const steps = curMoment==='m' ? p.matin : p.soir;
+  const pfx = curMoment;
+  document.getElementById('activeSteps').innerHTML = steps.map((s,i)=>{
+    const k=`${pfx}_${i}`,done=checks[k]?'done':'';
+    const pill=s.pill?`<span class="spill ${s.pill}">${s.pl}</span>`:'';
+    return `<div class="srow ${done}" onclick="toggleStep('${k}',this)"><div class="chk"></div><div class="sbody"><div class="sname">${s.n}</div>${s.no?`<div class="snote">${s.no}</div>`:''}</div>${pill}</div>`;
+  }).join('');
+}
+function toggleStep(k,row){
+  checks[k]=!checks[k];ss('checks',checks);
+  row.classList.toggle('done',checks[k]);
+  const pi=phaseOverride!==null?phaseOverride:phaseIdx(dayN());
+  updateProgress(pi);
+  checkStreakToday(pi);
+}
+function updateProgress(pi){
+  const p=PHASES[pi];
+  const total=p.matin.length+p.soir.length;
+  let done=0;
+  p.matin.forEach((_,i)=>{if(checks[`m_${i}`])done++;});
+  p.soir.forEach((_,i)=>{if(checks[`s_${i}`])done++;});
+  // count for current moment only in the ring display
+  const curSteps = curMoment==='m' ? p.matin : p.soir;
+  const curPfx = curMoment;
+  let curDone=0;
+  curSteps.forEach((_,i)=>{if(checks[`${curPfx}_${i}`])curDone++;});
+  document.getElementById('progN').innerHTML=`${curDone}<sup> / ${curSteps.length}</sup>`;
+  const pct=curSteps.length?curDone/curSteps.length:0;
+  const circ=119,offset=circ-(pct*circ);
+  const ring=document.getElementById('ringFg');
+  ring.setAttribute('stroke-dashoffset',offset);
+  ring.style.stroke=curDone===curSteps.length&&curSteps.length>0?'var(--amber)':'var(--green)';
+  const lbl=document.getElementById('progLbl'),dm=document.getElementById('progDone');
+  if(curDone===curSteps.length&&curSteps.length>0){lbl.style.display='none';dm.style.display='block';}
+  else{lbl.style.display='block';dm.style.display='none';}
+}
+
+// ══ STREAK ══
+function checkStreakToday(pi){
+  const p=PHASES[pi];
+  const total=p.matin.length+p.soir.length;
+  let done=0;
+  p.matin.forEach((_,i)=>{if(checks[`m_${i}`])done++;});
+  p.soir.forEach((_,i)=>{if(checks[`s_${i}`])done++;});
+  if(done===total&&total>0){
+    const today=new Date().toDateString();
+    if(!streakData[today]){
+      streakData[today]=true;ss('streakData',streakData);
+      updateStreak(dayN());
+      const s=calcStreak();
+      if(s>0&&s%7===0)celebrate('🔥',`${s} jours de streak !`,`Tu as suivi ta routine ${s} jours d'affilée. Ta peau te remercie.`);
+      else toast(`🔥 Streak: ${s} jour${s>1?'s':''}`);
+    }
+  }
+}
+function calcStreak(){
+  let s=0,d=new Date();d.setHours(0,0,0,0);
+  for(let i=0;i<60;i++){
+    if(streakData[d.toDateString()])s++;
+    else if(i>0)break;
+    d.setDate(d.getDate()-1);
+  }
+  return s;
+}
+function updateStreak(d){
+  const s=calcStreak();
+  document.getElementById('streakN').textContent=s;
+}
+function renderStreakModal(){
+  const s=calcStreak();
+  document.getElementById('streakSub').textContent=`${s} jour${s!==1?'s':''} consécutif${s!==1?'s':''} de routine complète`;
+  const days=[];
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);d.setHours(0,0,0,0);days.push(d);}
+  document.getElementById('streakDays').innerHTML=days.map(d=>{
+    const ds=d.toDateString(),hit=streakData[ds];
+    const isToday=ds===new Date().toDateString();
+    const day=d.getDate();
+    return `<div class="sd ${isToday?'today':hit?'hit':'miss'}">${day}</div>`;
+  }).join('');
+}
+
+// ══ PRODUCTS ══
+function renderProducts(){
+  const wc=['pw0','pw1','pw2'];
+  document.getElementById('plist').innerHTML=PRODUCTS.map(p=>`
+    <div class="pcard">
+      <div class="pimg"><img src="${IMGS[p.img]}" alt="${p.img}"></div>
+      <div class="pinfo">
+        ${p.brand?`<div class="pbrand">${p.brand}</div>`:''}
+        <div class="pname">${p.name}</div>
+        <div class="prole">${p.role}</div>
+        <span class="pwhen ${wc[p.when]}">${p.wl}</span>
       </div>
-      ${e.note ? `<div class="j-entry-text">${e.note}</div>` : ''}
     </div>`).join('');
 }
 
-// ──────────────────────────────────────────────
-// NAVIGATION
-// ──────────────────────────────────────────────
-function switchTab(tab, newIdx) {
-  if (tab === currentTab) return;
-  const oldIdx = tabOrder.indexOf(currentTab);
-  const goRight = newIdx > oldIdx;
-  const oldV = document.getElementById('view-'+currentTab);
-  const newV = document.getElementById('view-'+tab);
-  oldV.classList.add('exit-left');
-  oldV.classList.remove('active');
-  newV.style.cssText = `transform:translateX(${goRight?32:-32}px);opacity:0;transition:none;`;
-  newV.offsetHeight;
-  newV.style.cssText = '';
-  newV.classList.remove('exit-left');
-  newV.classList.add('active');
-  setTimeout(()=>{ oldV.classList.remove('exit-left'); oldV.style.transform=''; }, 360);
-  document.querySelectorAll('.nav-item').forEach(n=>n.classList.remove('active'));
-  document.getElementById('nav-'+tab).classList.add('active');
-  currentTab = tab;
-}
-
-// ──────────────────────────────────────────────
-// MODALS
-// ──────────────────────────────────────────────
-function openModal(id) {
-  if (id==='notif') renderNotifList();
-  document.getElementById('modal-'+id).classList.add('show');
-}
-function closeModal(id) { document.getElementById('modal-'+id).classList.remove('show'); }
-function closeModalIfOutside(e, id) { if(e.target===document.getElementById('modal-'+id)) closeModal(id); }
-
-function renderNotifList() {
-  document.getElementById('notifList').innerHTML = NOTIFS.map(n=>`
-    <div class="notif-row">
-      <div class="notif-emoji">${n.e}</div>
-      <div class="notif-info"><div class="notif-name">${n.n}</div><div class="notif-time">${n.t} · ${n.d}</div></div>
-      <button class="toggle ${notifState[n.id]?'on':''}" onclick="toggleNotif('${n.id}',this)"></button>
+// ══ TIMELINE ══
+function renderTimeline(d,pi){
+  const tl=[
+    {ph:'J+14 → J+21',title:'Réparation pure',state:d>=21||pi>0?'done':d>=14?'now':'future',items:['Centella ou sérum barrière matin + soir','NMF + céramides + gel crème chaque jour','SPF 50+ chaque matin — toujours en dernier','Zéro actif : rétinal et acides interdits']},
+    {ph:'J+21 → J+28',title:'Introduction rétinal',state:d>=28||pi>1?'done':pi===1?'now':'future',items:['Rétinal 0.2% max 2 soirs/semaine','Crème hydratante PAR-DESSUS obligatoire','Si irritation : stop et retour phase 1']},
+    {ph:'J+28 → J+42',title:'Montée progressive',state:d>=42||pi>2?'done':pi===2?'now':'future',items:['Rétinal 2–3 soirs/semaine si toléré','Hydratation renforcée systématique','Acide salicylique encore à éviter si sensible']},
+    {ph:'J+42 → J+56',title:'Retour des actifs',state:d>=56?'done':pi===3?'now':'future',items:['Rétinal jusqu\'à 1 soir sur 2 si toléré','Acide salicylique 1×/sem en introduction','Ne jamais combiner les deux le même soir']},
+  ];
+  document.getElementById('tlContent').innerHTML=tl.map((t,i)=>`
+    <div class="tli">
+      <div class="tleft"><div class="tldot ${t.state==='done'?'done':''} ${t.state==='now'?'now':''}"></div>${i<3?'<div class="tlline"></div>':''}</div>
+      <div style="flex:1;min-width:0"><div class="tlphase">${t.ph}${t.state==='now'?' · EN COURS':''}</div><div class="tltitle">${t.title}</div><div class="tlrows">${t.items.map(x=>`<div class="tlrow">${x}</div>`).join('')}</div></div>
     </div>`).join('');
 }
+function renderWeekGrid(d){
+  const weeks=[
+    {l:'S3',days:[14,20],type:'repair'},{l:'S4',days:[21,27],type:'intro'},
+    {l:'S5',days:[28,34],type:'intro'},{l:'S6',days:[35,41],type:'intro'},
+    {l:'S7',days:[42,48],type:'repair'},{l:'S8',days:[49,56],type:'repair'},
+  ];
+  document.getElementById('weekGrid').innerHTML=weeks.map(w=>{
+    const now=d>=w.days[0]&&d<=w.days[1],done=d>w.days[1];
+    return `<div class="wk"><div class="wk-bar ${w.type}${done?' done-bar':''}${now?' now-bar':''}"></div><div class="wk-lbl${now?' cur':''}">${w.l}</div></div>`;
+  }).join('');
+}
 
-function toggleNotif(id,btn) { notifState[id]=!notifState[id]; save('notifState',notifState); btn.classList.toggle('on',notifState[id]); }
+// ══ JOURNAL ══
+let jAnswers={};
+function renderJournalView(){
+  renderJStats();
+  renderJChart();
+  renderJQuestions();
+  renderJEntries();
+}
+function renderJQuestions(){
+  document.getElementById('jQs').innerHTML=J_QUESTIONS.map(q=>`
+    <div class="j-q">
+      <div class="j-q-t">${q.q}</div>
+      <div class="j-opts">${q.opts.map(o=>`<div class="jopt" data-qid="${q.id}" data-v="${o.v}" data-c="${o.c}" onclick="pickJOpt(this)">${o.l}</div>`).join('')}</div>
+    </div>`).join('');
+}
+function pickJOpt(el){
+  const qid=el.dataset.qid;
+  el.closest('.j-opts').querySelectorAll('.jopt').forEach(o=>{o.className='jopt';});
+  el.classList.add(el.dataset.c);
+  jAnswers[qid]={v:el.dataset.v,l:el.textContent};
+  updateJSave();
+}
+function updateJSave(){
+  const rdy=Object.keys(jAnswers).length>0;
+  const btn=document.getElementById('jSave');
+  btn.disabled=!rdy;btn.classList.toggle('rdy',rdy);
+}
+function saveJournal(){
+  const d=dayN(),note=document.getElementById('jNote').value.trim();
+  const entry={day:d,date:new Date().toLocaleDateString('fr-FR',{day:'numeric',month:'short'}),ts:Date.now(),answers:{...jAnswers},note};
+  journal.unshift(entry);ss('journal',journal);
+  jAnswers={};
+  document.getElementById('jNote').value='';
+  renderJQuestions();
+  updateJSave();
+  renderJStats();renderJChart();renderJEntries();
+  toast('Entrée enregistrée ✓');
+  // Warn if bad skin reaction
+  if(jAnswers.global&&(jAnswers.global.v==='bad'||jAnswers.global.v==='warn')){
+    setTimeout(()=>toast('⚠️ Peau sensible — pense à simplifier ta routine'),1500);
+  }
+}
+function renderJStats(){
+  const total=journal.length;
+  const bad=journal.filter(e=>e.answers.global&&(e.answers.global.v==='bad'||e.answers.global.v==='warn')).length;
+  const spfOk=journal.filter(e=>e.answers.spf&&e.answers.spf.v==='ok').length;
+  document.getElementById('jStats').innerHTML=`
+    <div class="jstat"><div class="jstat-n">${total}</div><div class="jstat-l">entrées au total</div></div>
+    <div class="jstat"><div class="jstat-n" style="color:${bad>2?'var(--red)':'var(--green)'}">${total?Math.round(((total-bad)/total)*100):'-'}%</div><div class="jstat-l">jours sans irritation</div></div>
+    <div class="jstat"><div class="jstat-n">${calcStreak()}</div><div class="jstat-l">jours de streak 🔥</div></div>
+    <div class="jstat"><div class="jstat-n" style="color:var(--amber)">${spfOk}</div><div class="jstat-l">SPF confirmés</div></div>
+  `;
+}
+function renderJChart(){
+  const el=document.getElementById('jChart');
+  if(journal.length<3){el.style.display='none';return;}
+  el.style.display='block';
+  const last14=[];
+  for(let i=13;i>=0;i--){const d=new Date();d.setDate(d.getDate()-i);last14.push({date:d.toLocaleDateString('fr-FR',{day:'numeric'}),ts:d.setHours(0,0,0,0)});}
+  const colorMap={ok:'ok',neu:'',warn:'warn',bad:'bad'};
+  const maxH=48;
+  el.innerHTML=`<div class="j-chart-t">Tolérance — 14 derniers jours</div><div class="j-bars">${last14.map(day=>{
+    const entry=journal.find(e=>{const ed=new Date(e.ts);ed.setHours(0,0,0,0);return ed.getTime()===day.ts;});
+    const v=entry&&entry.answers.global?entry.answers.global.v:'';
+    const h=v?maxH:4;const cls=colorMap[v]||'empty';
+    return `<div class="jbar-wrap" style="justify-content:flex-end"><div class="jbar ${cls}" style="height:${h}px"></div><div class="jbar-d">${day.date}</div></div>`;
+  }).join('')}</div>`;
+}
+function renderJEntries(){
+  const el=document.getElementById('jEntries');
+  if(!journal.length){el.innerHTML='<div class="j-empty">Aucune entrée encore.<br>Note comment réagit ta peau chaque jour —<br>utile pour ajuster les actifs et à montrer à ton dermatologue.</div>';return;}
+  const colorMap={ok:'tg',neu:'tb',warn:'ta',bad:'tr'};
+  el.innerHTML=journal.slice(0,20).map(e=>{
+    const g=e.answers.global;
+    const emoMap={ok:'😊',neu:'😐',warn:'🔥',bad:'😬'};
+    const emo=g?emoMap[g.v]||'📝':'📝';
+    const tags=Object.entries(e.answers).filter(([k,v])=>k!=='global').map(([k,v])=>`<span class="jentry-tag ${colorMap[v.v]||'tb'}">${v.l}</span>`).join('');
+    return `<div class="jentry"><div class="jentry-top"><div class="jentry-day"><span class="jentry-ico">${emo}</span>J+${e.day}</div><div class="jentry-date">${e.date}</div></div>${tags?`<div class="jentry-details">${tags}</div>`:''}${e.note?`<div class="jentry-note">${e.note}</div>`:''}</div>`;
+  }).join('');
+}
 
-async function activateNotifs() {
-  if (!('Notification' in window)) { showToast('Notifications non supportées ici'); return; }
-  const perm = await Notification.requestPermission();
-  if (perm==='granted') {
+// ══ PHASE VALIDATION ══
+let pvChecked=new Set();
+function openPhaseValidate(pi){
+  const p=PHASES[pi];
+  document.getElementById('phaseModalT').textContent=`Passer à la phase ${pi+2} ?`;
+  document.getElementById('phaseModalS').textContent='Coche ces points pour confirmer que ta peau est prête';
+  pvChecked=new Set();
+  document.getElementById('pvChecks').innerHTML=p.nextChecks.map((c,i)=>`
+    <div class="pvc" id="pvc${i}" onclick="togglePVC(${i},${p.nextChecks.length})">
+      <div class="pvc-chk"></div>
+      <div class="pvc-t">${c}</div>
+    </div>`).join('');
+  openM('phase');
+}
+function togglePVC(i,total){
+  const el=document.getElementById('pvc'+i);
+  el.classList.toggle('checked');
+  if(el.classList.contains('checked'))pvChecked.add(i);else pvChecked.delete(i);
+  document.getElementById('pvCta').disabled=pvChecked.size<total;
+  document.getElementById('pvCta').style.opacity=pvChecked.size<total?'.38':'1';
+}
+function validatePhase(){
+  const d=dayN();const currentPi=phaseIdx(d);
+  phaseOverride=Math.min(currentPi+1,3);
+  ss('phaseOverride',phaseOverride);
+  closeM('phase');
+  const names=['Réparation pure','Introduction rétinal','Montée progressive','Retour des actifs'];
+  celebrate('✨','Phase suivante débloquée !',`Tu passes à la phase "${names[phaseOverride]}". Continue comme ça !`);
+  updateHeader(d,phaseOverride);
+  renderHeroCard(phaseOverride);
+  renderRoutine(phaseOverride);
+  renderTimeline(d,phaseOverride);
+}
+
+// ══ NAVIGATION ══
+function tab(t,ni){
+  if(t===curTab)return;
+  const oi=tabOrder.indexOf(curTab);
+  const right=ni>oi;
+  const ov=document.getElementById('v-'+curTab),nv=document.getElementById('v-'+t);
+  ov.classList.add('xl');ov.classList.remove('active');
+  nv.style.cssText=`transform:translateX(${right?28:-28}px);opacity:0;transition:none;`;
+  nv.offsetHeight;nv.style.cssText='';
+  nv.classList.remove('xl');nv.classList.add('active');
+  setTimeout(()=>{ov.classList.remove('xl');ov.style.transform='';},320);
+  document.querySelectorAll('.ni').forEach(n=>n.classList.remove('active'));
+  document.getElementById('ni-'+t).classList.add('active');
+  curTab=t;
+  if(t==='journal')renderJournalView();
+  if(t==='regles')renderPtBanner();
+}
+
+// ══ MODALS ══
+function openM(id){
+  if(id==='notif')renderNotifs();
+  if(id==='streak')renderStreakModal();
+  document.getElementById('m-'+id).classList.add('on');
+}
+function closeM(id,e){
+  if(e&&e.target!==document.getElementById('m-'+id))return;
+  document.getElementById('m-'+id).classList.remove('on');
+}
+function doReset(){
+  checks={_date:new Date().toDateString()};ss('checks',checks);
+  closeM('reset');
+  const pi=phaseOverride!==null?phaseOverride:phaseIdx(dayN());
+  renderRoutine(pi);updateProgress(pi);
+  toast('Cases remises à zéro');
+}
+
+// ══ NOTIFS ══
+function renderNotifs(){
+  document.getElementById('nlist').innerHTML=NOTIFS.map(n=>`
+    <div class="nrow"><div class="nemo">${n.e}</div><div class="ninfo"><div class="nname">${n.n}</div><div class="ntime">${n.t} · ${n.d}</div></div><button class="tog ${notifState[n.id]?'on':''}" onclick="togNotif('${n.id}',this)"></button></div>`).join('');
+}
+function togNotif(id,btn){notifState[id]=!notifState[id];ss('notifState',notifState);btn.classList.toggle('on',notifState[id]);}
+async function activateNotifs(){
+  if(!('Notification' in window)){toast('Non supporté ici');return;}
+  const p=await Notification.requestPermission();
+  if(p==='granted'){
     NOTIFS.filter(n=>notifState[n.id]).forEach(n=>{
-      const [h,m]=n.t.split(':').map(Number);
-      const now=new Date(), next=new Date();
-      next.setHours(h,m,0,0);
-      if(next<=now) next.setDate(next.getDate()+1);
-      setTimeout(()=>{ new Notification(n.n,{body:n.d}); setInterval(()=>new Notification(n.n,{body:n.d}),86400000); },next-now);
+      const[h,m]=n.t.split(':').map(Number),now=new Date(),next=new Date();
+      next.setHours(h,m,0,0);if(next<=now)next.setDate(next.getDate()+1);
+      setTimeout(()=>{new Notification(n.n,{body:n.d});setInterval(()=>new Notification(n.n,{body:n.d}),86400000);},next-now);
     });
-    closeModal('notif');
-    const btn=document.getElementById('notifBtn');
-    btn.textContent='Rappels ✓'; btn.classList.add('on');
-    showToast('Rappels activés ✓');
-  } else { showToast('Active les notifs dans Réglages → Safari'); }
+    closeM('notif');
+    document.getElementById('notifBtn').textContent='Rappels ✓';
+    document.getElementById('notifBtn').classList.add('on');
+    toast('Rappels activés ✓');
+  }else toast('Active les notifs dans Réglages Safari');
 }
 
-// ──────────────────────────────────────────────
-// TOAST
-// ──────────────────────────────────────────────
-function showToast(msg) {
+// ══ TOAST & CELEBRATE ══
+function toast(msg){
   const t=document.getElementById('toast');
-  t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),2800);
+  t.textContent=msg;t.classList.add('on');
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove('on'),2800);
 }
+function celebrate(emoji,title,sub){
+  document.getElementById('celebEmoji').textContent=emoji;
+  document.getElementById('celebT').textContent=title;
+  document.getElementById('celebS').textContent=sub;
+  document.getElementById('celeb').classList.add('on');
+}
+function closeCeleb(){document.getElementById('celeb').classList.remove('on');}
 
-// ── GO ──
-init();
+// ══ GO ══
+if(laserDate){
+  document.getElementById('ob').classList.add('gone');
+  document.getElementById('app').classList.remove('gone');
+  boot();
+}else{
+  // pre-fill date to today-14
+  const d=new Date();d.setDate(d.getDate()-14);
+  document.getElementById('laserDateInput').value=d.toISOString().split('T')[0];
+  checkOb1();
+}
 </script>
 </body>
 </html>
